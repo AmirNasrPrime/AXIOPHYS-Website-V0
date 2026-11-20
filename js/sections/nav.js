@@ -61,7 +61,7 @@ export function initNav() {
     const logo = nav && nav.querySelector('.nav__logo');
     if (copy && logo && window.innerWidth <= 719) {
       const clearance = copy.getBoundingClientRect().top - logo.getBoundingClientRect().bottom;
-      const fade = Math.min(clamp((progress - .85) / .15, 0, 1), clamp((clearance - 28) / 32, 0, 1));
+      const fade = progress >= 1 ? 1 : Math.min(clamp((progress - .85) / .15, 0, 1), clamp((clearance - 28) / 32, 0, 1));
       copy.style.setProperty('--mobile-copy-opacity', String(fade));
     }
 
