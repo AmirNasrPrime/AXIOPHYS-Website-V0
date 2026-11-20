@@ -133,3 +133,8 @@
 /* Clearance is checked against the rendered logo, not an assumed phone height. */
 @media(max-width:719px){.hero__copy{opacity:var(--mobile-copy-opacity,0)}}
 @media(max-width:719px) and (prefers-reduced-motion:reduce){.hero__copy{opacity:1}}
+
+/* The phone opening completes with an 80px gesture; bring copy into reading range. */
+@media(max-width:719px){
+ .hero .hero__ui{padding-top:calc(var(--nav-h) + 120px + env(safe-area-inset-top))}
+}
