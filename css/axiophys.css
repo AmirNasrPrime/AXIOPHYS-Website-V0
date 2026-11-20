@@ -112,3 +112,15 @@
  :root:not(.menu-open) .nav .nav__brand{transform:none}
  :root:not(.menu-open) .nav .nav__sub{opacity:1}
 }
+
+/* On phones, clear the moving logo before revealing the hero copy. */
+@media(max-width:719px){
+ .hero__copy{
+  --copy-progress:clamp(0,calc((var(--brand-progress) - .85) / .15),1);
+  opacity:var(--copy-progress);
+  transform:translateY(calc(18px * (1 - var(--copy-progress))));
+ }
+}
+@media(max-width:719px) and (prefers-reduced-motion:reduce){
+ .hero__copy{opacity:1;transform:none}
+}
