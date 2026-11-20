@@ -371,6 +371,15 @@ function initNav() {
     const progress = clamp(window.scrollY / 220, 0, 1);
     document.documentElement.style.setProperty('--brand-progress', String(progress));
     if (nav) nav.classList.toggle('brand-compact', progress >= 1);
+    // Measure rendered bounds: phone browser chrome and safe areas change clearance.
+    const copy = document.querySelector('.hero__copy');
+    const logo = nav && nav.querySelector('.nav__logo');
+    if (copy && logo && window.innerWidth <= 719) {
+      const clearance = copy.getBoundingClientRect().top - logo.getBoundingClientRect().bottom;
+      const fade = Math.min(clamp((progress - .85) / .15, 0, 1), clamp((clearance - 28) / 32, 0, 1));
+      copy.style.setProperty('--mobile-copy-opacity', String(fade));
+    }
+
     if (queued) return;
     queued = true;
     requestAnimationFrame(() => {

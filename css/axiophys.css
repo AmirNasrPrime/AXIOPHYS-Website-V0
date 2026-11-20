@@ -129,3 +129,7 @@
 @media(max-width:719px){
  .hero .hero__ui{padding-top:max(calc(var(--nav-h) + 260px + env(safe-area-inset-top)),calc(var(--nav-h) + var(--logo-w) * var(--logo-ar) * var(--logo-s) + 42px + env(safe-area-inset-top)))}
 }
+
+/* Clearance is checked against the rendered logo, not an assumed phone height. */
+@media(max-width:719px){.hero__copy{opacity:var(--mobile-copy-opacity,0)}}
+@media(max-width:719px) and (prefers-reduced-motion:reduce){.hero__copy{opacity:1}}
