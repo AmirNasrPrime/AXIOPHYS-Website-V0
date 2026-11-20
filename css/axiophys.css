@@ -163,24 +163,45 @@
   .story-copy .t-small{font-size:14px}
   .story-copy .btn,.story-section .contact__mail{margin-top:14px}
   .story-section .contact__mail{font-size:clamp(18px,5.7vw,29px)}
-  .story-layout .about__stage{width:min(100%,clamp(130px,27svh,252px))}
   .story-layout .about__cap{margin-top:4px}
   .story-layout .orbit{height:auto;gap:6px}
   .story-layout .orbit__canvas{height:clamp(155px,27svh,260px);min-height:0}
   .story-product-visual canvas{height:clamp(135px,25svh,245px)}
   .story-contact-visual{width:min(39svh,190px)}
   .story-track{--story-runway:clamp(76px,13svh,125px)}
-  .story-track--hero{--story-runway:clamp(74px,12svh,104px)}
+  .story-track--hero{--story-runway:clamp(132px,21svh,182px)}
   .menu{overflow-y:auto}
   .menu a,.menu__auth{min-height:48px}
 }
 @media(max-width:719px) and (max-height:690px){
   .story-section{padding-block:16px}
   .story-layout{gap:14px}
-  .story-layout .about__stage{width:min(100%,clamp(125px,25svh,162px))}
   .story-layout .orbit__canvas{height:clamp(135px,24svh,175px)}
   .story-product-visual canvas{height:clamp(122px,22svh,152px)}
 }
+/* Give both plots a full phone-width frame, even on a short screen.
+   The chapter automatically uses normal flow when its contents need more room. */
+@media(max-width:719px),(max-width:960px) and (max-height:540px){
+  .story-layout .about__stage{
+    width:min(100%,460px);
+    aspect-ratio:1 / 1.2;
+  }
+  .story-layout .about__views{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    width:min(100%,460px);
+    margin-inline:auto;
+  }
+  .story-layout .about__view{
+    justify-content:center;
+    padding-inline:8px;
+  }
+  .story-layout .about__cap{
+    min-height:2lh;
+    text-wrap:balance;
+  }
+}
+
 /* Use the document's scroll timeline where available. The same distances also
    drive the requestAnimationFrame fallback for older browsers. */
 @supports (animation-timeline:scroll(root block)) and (animation-range:0px 1px){

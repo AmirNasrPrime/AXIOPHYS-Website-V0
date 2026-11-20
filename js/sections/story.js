@@ -22,6 +22,8 @@ export function initStory() {
   let needsMeasure = true;
   let needsOpeningLayout = true;
   let openingDistance = 0;
+  let phoneProgress;
+  let lastFrameTime = 0;
 
   // All opening beats share one distance. The paragraph finishes at release.
   const dockEnd = .54;
@@ -44,7 +46,7 @@ export function initStory() {
       root.style.setProperty('--brand-start-scale', String(scale));
     }
 
-    if (nativeTimeline) {
+    if (nativeTimeline && !mobile) {
       const milestones = {
         'brand-dock-end': dockEnd,
         'brand-tag-end': taglineEnd,
@@ -58,10 +60,13 @@ export function initStory() {
       }
     }
   }
-  function update() {
+  function update(now) {
     frame = 0;
+    const elapsed = lastFrameTime ? Math.min(now - lastFrameTime, 40) : 16;
+    lastFrameTime = now;
     const height = window.innerHeight;
     const mobile = phone.matches;
+    const useNativeTimeline = nativeTimeline && !mobile;
     const still = motion.matches;
     const headerHeight = header?.offsetHeight ?? 0;
 
@@ -100,14 +105,32 @@ export function initStory() {
       // so the paragraph is readable as it reaches the middle of the screen.
       let detail = smooth(.26, pinned ? 1 : .67, entered);
       if (hero) {
-        const distance = pinned ? travel : (mobile ? 74 : 128);
+        const distance = pinned ? travel : 128;
         if (needsOpeningLayout || distance !== openingDistance) {
           layoutOpening(distance, sceneHeight, height, mobile);
           needsOpeningLayout = false;
         }
-        if (nativeTimeline && !still) continue;
+        if (useNativeTimeline && !still) continue;
 
-        const progress = clamp(window.scrollY / distance, 0, 1);
+        const target = clamp(window.scrollY / distance, 0, 1);
+        let progress = target;
+        if (mobile && !still) {
+          // Touch scroll arrives in larger steps. Ease the whole opening toward
+          // each position, so text cannot catch up to a logo that's still moving.
+          if (phoneProgress === undefined || top + sceneHeight + travel < 0) {
+            phoneProgress = target;
+          } else {
+            const easedStep = (target - phoneProgress) * (1 - Math.exp(-elapsed / 55));
+            // Bound one frame's movement so a fling still has a visible glide.
+            const stepLimit = elapsed / 280;
+            phoneProgress += clamp(easedStep, -stepLimit, stepLimit);
+          }
+          if (Math.abs(target - phoneProgress) < .003) phoneProgress = target;
+          else schedule();
+          progress = phoneProgress;
+        } else {
+          phoneProgress = undefined;
+        }
         root.style.setProperty('--brand-progress', String(still ? 1 : smooth(0, dockEnd, progress)));
         root.style.setProperty('--brand-tagline', String(still ? 1 : smooth(dockEnd, taglineEnd, progress)));
         lead = smooth(leadStart, leadEnd, progress);
@@ -118,7 +141,7 @@ export function initStory() {
       scene.classList.toggle('story-detail-ready', still || detail > .5);
     }
     root.classList.add('story-active');
-    root.classList.toggle('story-native', nativeTimeline && !still);
+    root.classList.toggle('story-native', useNativeTimeline && !still);
   }
   function schedule() {
     if (!frame) frame = requestAnimationFrame(update);

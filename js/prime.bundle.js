@@ -346,6 +346,8 @@ function initStory() {
   let needsMeasure = true;
   let needsOpeningLayout = true;
   let openingDistance = 0;
+  let phoneProgress;
+  let lastFrameTime = 0;
 
   // All opening beats share one distance. The paragraph finishes at release.
   const dockEnd = .54;
@@ -368,7 +370,7 @@ function initStory() {
       root.style.setProperty('--brand-start-scale', String(scale));
     }
 
-    if (nativeTimeline) {
+    if (nativeTimeline && !mobile) {
       const milestones = {
         'brand-dock-end': dockEnd,
         'brand-tag-end': taglineEnd,
@@ -382,10 +384,13 @@ function initStory() {
       }
     }
   }
-  function update() {
+  function update(now) {
     frame = 0;
+    const elapsed = lastFrameTime ? Math.min(now - lastFrameTime, 40) : 16;
+    lastFrameTime = now;
     const height = window.innerHeight;
     const mobile = phone.matches;
+    const useNativeTimeline = nativeTimeline && !mobile;
     const still = motion.matches;
     const headerHeight = header?.offsetHeight ?? 0;
 
@@ -424,14 +429,32 @@ function initStory() {
       // so the paragraph is readable as it reaches the middle of the screen.
       let detail = smooth(.26, pinned ? 1 : .67, entered);
       if (hero) {
-        const distance = pinned ? travel : (mobile ? 74 : 128);
+        const distance = pinned ? travel : 128;
         if (needsOpeningLayout || distance !== openingDistance) {
           layoutOpening(distance, sceneHeight, height, mobile);
           needsOpeningLayout = false;
         }
-        if (nativeTimeline && !still) continue;
+        if (useNativeTimeline && !still) continue;
 
-        const progress = clamp(window.scrollY / distance, 0, 1);
+        const target = clamp(window.scrollY / distance, 0, 1);
+        let progress = target;
+        if (mobile && !still) {
+          // Touch scroll arrives in larger steps. Ease the whole opening toward
+          // each position, so text cannot catch up to a logo that's still moving.
+          if (phoneProgress === undefined || top + sceneHeight + travel < 0) {
+            phoneProgress = target;
+          } else {
+            const easedStep = (target - phoneProgress) * (1 - Math.exp(-elapsed / 55));
+            // Bound one frame's movement so a fling still has a visible glide.
+            const stepLimit = elapsed / 280;
+            phoneProgress += clamp(easedStep, -stepLimit, stepLimit);
+          }
+          if (Math.abs(target - phoneProgress) < .003) phoneProgress = target;
+          else schedule();
+          progress = phoneProgress;
+        } else {
+          phoneProgress = undefined;
+        }
         root.style.setProperty('--brand-progress', String(still ? 1 : smooth(0, dockEnd, progress)));
         root.style.setProperty('--brand-tagline', String(still ? 1 : smooth(dockEnd, taglineEnd, progress)));
         lead = smooth(leadStart, leadEnd, progress);
@@ -442,7 +465,7 @@ function initStory() {
       scene.classList.toggle('story-detail-ready', still || detail > .5);
     }
     root.classList.add('story-active');
-    root.classList.toggle('story-native', nativeTimeline && !still);
+    root.classList.toggle('story-native', useNativeTimeline && !still);
   }
   function schedule() {
     if (!frame) frame = requestAnimationFrame(update);
@@ -789,6 +812,8 @@ const inkAt = (T, a) => `${T.ink}${a})`;
 
 
 
+const aboutPhonePlots = matchMedia('(max-width: 719px), (max-width: 960px) and (max-height: 540px)');
+
 function initAbout() {
   const sec = $('#about');
   if (!sec) return;
@@ -882,10 +907,12 @@ function portrait(canvas) {
 
     const mono = px => `600 ${px}px ui-monospace, monospace`;
     const big = w >= 440;                  /* a roomier canvas gets roomier type */
-    const KEY = 64;                        /* the band the legend owns       */
+    const phonePlot = aboutPhonePlots.matches;
+    const KEY = phonePlot ? 74 : 64;
     const PAD = 12;
-    const plotH = h - KEY - PAD;
-    const cx = w / 2, cy = PAD + plotH / 2;
+    const top = phonePlot ? 26 : PAD;
+    const plotH = h - KEY - top - (phonePlot ? 19 : 0);
+    const cx = w / 2, cy = top + plotH / 2;
     const A = (w / 2 - PAD) / MAXR;
     const B = Math.min((plotH / 2 - PAD) / MAXR, A * 0.92);
     const P = (r, th) => [cx + A * r * Math.cos(th), cy - B * r * Math.sin(th)];
@@ -904,15 +931,21 @@ function portrait(canvas) {
       ctx.moveTo(cx - 3.5, cy + B * i * 0.5); ctx.lineTo(cx + 3.5, cy + B * i * 0.5);
       ctx.stroke();
     }
-    ctx.font = mono(big ? 10.5 : 9.5);
+    ctx.font = mono(phonePlot ? 11 : big ? 10.5 : 9.5);
     ctx.fillStyle = withAlpha(T.text3, 0.8);
     const xl = 'DISPLACEMENT';
-    ctx.fillText(xl, Math.min(cx + A * MAXR - ctx.measureText(xl).width, w - PAD - ctx.measureText(xl).width), cy - 7);
-    ctx.save();
-    ctx.translate(cx - 7, cy - B * MAXR + ctx.measureText('RATE').width);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillText('RATE', 0, 0);
-    ctx.restore();
+    const labelX = w - PAD - ctx.measureText(xl).width;
+    if (phonePlot) {
+      ctx.fillText('RATE', PAD, 17);
+      ctx.fillText(xl, labelX, h - KEY - 4);
+    } else {
+      ctx.fillText(xl, labelX, cy - 7);
+      ctx.save();
+      ctx.translate(cx - 7, cy - B * MAXR + ctx.measureText('RATE').width);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText('RATE', 0, 0);
+      ctx.restore();
+    }
 
     /* -------------------------------------- what the physics permits ---- */
     ctx.save();
@@ -995,7 +1028,7 @@ function portrait(canvas) {
 /* ------------------------------------------------------------- legend -- */
 /* four rows in the reserved band: nothing floats, nothing collides */
 function legend(ctx, w, h, KEY, PAD, big, rows) {
-  ctx.font = `600 ${big ? 11 : 10}px ui-monospace, monospace`;
+  ctx.font = `600 ${big || aboutPhonePlots.matches ? 11 : 10}px ui-monospace, monospace`;
   const colW = Math.max(...rows.map(r => ctx.measureText(r[2]).width)) + 34;
   const twoCol = w >= colW * 2 + PAD * 2;
   rows.forEach((r, i) => {
@@ -1125,12 +1158,17 @@ function domainSearch(canvas) {
   const T_DONE = tEval(evals[evals.length - 1]) + .55;
 
   const geom = (w, h) => {
-    const PAD = 12, KEY = 64, big = w >= 440;
+    const phonePlot = aboutPhonePlots.matches;
+    const PAD = 12, KEY = phonePlot ? 74 : 64, big = w >= 440;
     const top = PAD + 2, bottom = h - KEY - 4, avail = bottom - top;
-    const dH = Math.round(avail * .66), gap = Math.round(avail * .08);
+    const gap = phonePlot ? 30 : Math.round(avail * .08);
+    const axis = big || phonePlot ? 16 : 14;
+    const dH = phonePlot
+      ? avail - gap - axis - clamp(Math.round(avail * .27), 64, 110)
+      : Math.round(avail * .66);
     const D = { x: PAD + 14, y: top, w: w - PAD * 2 - 14, h: dH };
-    const S = { x: D.x, y: top + dH + gap, w: D.w, h: avail - dH - gap - (big ? 16 : 14) };
-    return { PAD, KEY, big, D, S };
+    const S = { x: D.x, y: top + dH + gap, w: D.w, h: avail - dH - gap - axis };
+    return { PAD, KEY, big, phonePlot, D, S };
   };
 
   /* everything that does not move is drawn once per size */
@@ -1140,7 +1178,7 @@ function domainSearch(canvas) {
     layer.width = Math.round(w * dpr); layer.height = Math.round(h * dpr);
     lc.setTransform(dpr, 0, 0, dpr, 0, 0);
     lc.clearRect(0, 0, w, h);
-    const { PAD, KEY, big, D, S } = geom(w, h);
+    const { PAD, KEY, big, phonePlot, D, S } = geom(w, h);
     const X = x => D.x + x * D.w, Y = y => D.y + (1 - y) * D.h;
     const mono = px => `600 ${px}px ui-monospace, monospace`;
 
@@ -1192,7 +1230,7 @@ function domainSearch(canvas) {
     lc.beginPath(); lc.moveTo(S.x, yStar); lc.lineTo(S.x + S.w, yStar); lc.stroke();
     lc.restore();
 
-    lc.font = mono(big ? 10.5 : 9.5);
+    lc.font = mono(phonePlot ? 11 : big ? 10.5 : 9.5);
     lc.fillStyle = withAlpha(T.text3, .8);
     const lx = 'DESIGN VARIABLE 1';
     lc.fillText(lx, D.x + D.w - lc.measureText(lx).width, D.y + D.h + (big ? 14 : 12));
@@ -1202,8 +1240,12 @@ function domainSearch(canvas) {
     const li = 'ITERATION';
     lc.fillText(li, S.x + S.w - lc.measureText(li).width, S.y + S.h + (big ? 14 : 12));
     const lo = 'OBJECTIVE';
-    lc.save(); lc.translate(S.x - 5, S.y + lc.measureText(lo).width); lc.rotate(-Math.PI / 2);
-    lc.fillText(lo, 0, 0); lc.restore();
+    if (phonePlot) {
+      lc.fillText(lo, S.x, S.y - 5);
+    } else {
+      lc.save(); lc.translate(S.x - 5, S.y + lc.measureText(lo).width); lc.rotate(-Math.PI / 2);
+      lc.fillText(lo, 0, 0); lc.restore();
+    }
     lc.fillStyle = withAlpha(T.text3, .5);
     const ln = 'INFEASIBLE';
     lc.fillText(ln, X(.97) - lc.measureText(ln).width, Y(.07));
