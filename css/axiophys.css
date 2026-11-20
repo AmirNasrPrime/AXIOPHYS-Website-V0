@@ -1,15 +1,13 @@
 .axiophys-logo{filter:url(#axiophys-on-dark)}
 :root{
-  --logo-ar:.2983;
   --brand-progress:1;
-  --opening-scale:4.4;
-  --nav-gutter:max(var(--gutter),env(safe-area-inset-left));
-  --opening-width:min(calc(var(--logo-w) * var(--opening-scale)),calc(100vw - 2 * var(--nav-gutter)));
+  --brand-start-scale:1;
+  --brand-start-x:0px;
+  --brand-start-y:0px;
   --story-inset:calc(var(--nav-h) + env(safe-area-inset-top));
 }
 .nav__brand{position:relative}
 .nav__logo{flex:none;transition:none}
-@media(min-width:1080px){:root{--nav-gutter:clamp(24px,2.6vw,44px)}}
 .story-active .nav__brand{
   inline-size:var(--logo-w);
   block-size:100%;
@@ -28,19 +26,33 @@
 .nav__sub{color:#fff;width:var(--sub-w)}
 :root:not(.menu-open) .nav:not(.stuck) .nav__logo,
 :root:not(.menu-open) .nav:not(.stuck) .nav__sub{transform:none}
-.story-active:not(.menu-open) .nav__brand{
-  transform:translate(
-    calc((50vw - var(--nav-gutter) - var(--opening-width) / 2) * (1 - var(--brand-progress))),
-    calc((50svh - var(--story-inset) / 2) * (1 - var(--brand-progress)))
-  );
+/* The header link stays in its slot. Move only its artwork. */
+.story-active .nav__logo{pointer-events:none}
+.story-active:not(.menu-open) .nav .nav__brand .nav__logo{
+  transform:
+    translate3d(
+      calc(var(--brand-start-x) * (1 - var(--brand-progress))),
+      calc(var(--brand-start-y) * (1 - var(--brand-progress))),
+      0
+    )
+    scale(calc(var(--brand-start-scale) + (1 - var(--brand-start-scale)) * var(--brand-progress)));
+  transform-origin:center;
 }
-.story-active:not(.menu-open) .nav .nav__logo{
-  width:calc(var(--opening-width) + (var(--logo-w) - var(--opening-width)) * var(--brand-progress));
-}
-.story-active:not(.menu-open) .nav .nav__sub{
-  opacity:clamp(0,calc((var(--brand-progress) - .94) / .06),1);
-}
+.story-active:not(.menu-open) .nav .nav__sub{opacity:var(--brand-tagline,1)}
 .story-active .nav__brand:focus-visible{outline-offset:4px}
+.story-active .nav .nav__brand:focus-visible .nav__logo{
+  animation:none;
+  transform:none;
+}
+
+/* Keep manual video playback away from the middle of the opening graphic. */
+.hero .hero__manual{
+  inset:calc(var(--story-inset) + 14px) var(--gutter) auto auto;
+  transform:none;
+  flex-direction:row;
+  gap:10px;
+}
+.hero .hero__manual button{width:44px;height:44px}
 
 .hero .hero__ui{padding-top:calc(var(--story-inset) + clamp(28px,7svh,72px))}
 .story-section{
@@ -137,7 +149,7 @@
   .story-layout .orbit{height:auto}
 }
 @media(max-width:719px){
-  :root{--logo-w:clamp(140px,39vw,180px);--opening-scale:3.1625}
+  :root{--logo-w:clamp(140px,39vw,180px)}
   .nav__in{gap:10px}
   .nav__brand{min-width:0;gap:0}
   .nav__act{margin-left:auto;flex-shrink:0}
@@ -158,7 +170,7 @@
   .story-product-visual canvas{height:clamp(135px,25svh,245px)}
   .story-contact-visual{width:min(39svh,190px)}
   .story-track{--story-runway:clamp(76px,13svh,125px)}
-  .story-track--hero{--story-runway:clamp(70px,12svh,104px)}
+  .story-track--hero{--story-runway:clamp(74px,12svh,104px)}
   .menu{overflow-y:auto}
   .menu a,.menu__auth{min-height:48px}
 }
@@ -169,26 +181,44 @@
   .story-layout .orbit__canvas{height:clamp(135px,24svh,175px)}
   .story-product-visual canvas{height:clamp(122px,22svh,152px)}
 }
-@media(max-width:719px) and (prefers-reduced-motion:no-preference){
-  .story-active{--brand-flight:600ms}
-  .story-active:not(.menu-open) .nav__brand{
-    transition:transform var(--brand-flight) cubic-bezier(.4,0,.2,1);
+/* Use the document's scroll timeline where available. The same distances also
+   drive the requestAnimationFrame fallback for older browsers. */
+@supports (animation-timeline:scroll(root block)) and (animation-range:0px 1px){
+  @media(prefers-reduced-motion:no-preference){
+    .story-native:not(.menu-open) .nav__brand:not(:focus-visible) .nav__logo{
+      animation:axiophys-dock auto cubic-bezier(.42,0,.58,1) both;
+      animation-timeline:scroll(root block);
+      animation-range:0px var(--brand-dock-end);
+    }
+    .story-native:not(.menu-open) .nav .nav__sub{
+      animation:axiophys-appear auto ease-in-out both;
+      animation-timeline:scroll(root block);
+      animation-range:var(--brand-dock-end) var(--brand-tag-end);
+    }
+    .story-native .hero [data-story-copy="lead"]{
+      animation:axiophys-appear auto ease-in-out both;
+      animation-timeline:scroll(root block);
+      animation-range:var(--hero-lead-start) var(--hero-lead-end);
+    }
+    .story-native .hero [data-story-copy="detail"]{
+      animation:axiophys-appear auto ease-in-out both;
+      animation-timeline:scroll(root block);
+      animation-range:var(--hero-detail-start) var(--hero-detail-end);
+    }
   }
-  .story-active:not(.menu-open) .nav .nav__logo{
-    transition:width var(--brand-flight) cubic-bezier(.4,0,.2,1);
-  }
-  /* Only the logo needs a timed handoff. Text progress follows the scroll. */
-  .story-active .hero__copy{opacity:0}
-  .story-active.story-hero-open .hero__copy{
-    opacity:1;
-    transition:opacity 180ms ease-out var(--brand-flight);
-  }
+}
+@keyframes axiophys-dock{
+  from{transform:translate3d(var(--brand-start-x),var(--brand-start-y),0) scale(var(--brand-start-scale))}
+  to{transform:translate3d(0,0,0) scale(1)}
+}
+@keyframes axiophys-appear{
+  from{opacity:0}
+  to{opacity:1}
 }
 @media(prefers-reduced-motion:reduce){
   .story-track--pinned{min-block-size:0}
   .story-track--pinned>[data-story]{position:relative;top:auto}
   .story-active [data-story-copy]{opacity:1}
-  .story-active:not(.menu-open) .nav__brand{transform:none}
-  .story-active:not(.menu-open) .nav .nav__logo{width:var(--logo-w)}
+  .story-active:not(.menu-open) .nav .nav__brand .nav__logo{transform:none}
   .story-active:not(.menu-open) .nav .nav__sub{opacity:1}
 }
