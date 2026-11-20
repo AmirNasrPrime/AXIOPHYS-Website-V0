@@ -138,3 +138,9 @@
 @media(max-width:719px){
  .hero .hero__ui{padding-top:calc(var(--nav-h) + 120px + env(safe-area-inset-top))}
 }
+
+/* Reveal in place after a tiny gesture, without pushing copy toward About. */
+@media(max-width:719px){
+ .hero .hero__ui{padding-top:calc(var(--nav-h) + 80px + env(safe-area-inset-top))}
+ .hero__copy{transform:none}
+}

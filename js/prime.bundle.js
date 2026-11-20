@@ -368,7 +368,7 @@ function initNav() {
   let queued = false;
   const onScroll = () => {
     // Drive identity size directly from distance, with no animation lag.
-    const openingDistance = window.innerWidth <= 719 ? 80 : 220;
+    const openingDistance = window.innerWidth <= 719 ? 24 : 220;
     const progress = clamp(window.scrollY / openingDistance, 0, 1);
     document.documentElement.style.setProperty('--brand-progress', String(progress));
     if (nav) nav.classList.toggle('brand-compact', progress >= 1);
@@ -377,7 +377,7 @@ function initNav() {
     const logo = nav && nav.querySelector('.nav__logo');
     if (copy && logo && window.innerWidth <= 719) {
       const clearance = copy.getBoundingClientRect().top - logo.getBoundingClientRect().bottom;
-      const fade = progress >= 1 ? 1 : Math.min(clamp((progress - .85) / .15, 0, 1), clamp((clearance - 28) / 32, 0, 1));
+      const fade = progress >= 1 ? 1 : Math.min(clamp((progress - .4) / .6, 0, 1), clamp((clearance - 16) / 20, 0, 1));
       copy.style.setProperty('--mobile-copy-opacity', String(fade));
     }
 
