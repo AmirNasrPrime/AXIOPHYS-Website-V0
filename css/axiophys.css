@@ -1,2 +1,39 @@
 .axiophys-logo{filter:url(#axiophys-on-dark)}
 :root{--logo-ar:.2983;--logo-word:.27}
+
+.prime-product{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(28px,6vw,96px);padding-block:clamp(28px,4vw,60px);border-top:1px solid var(--env-line-strong)}
+.prime-product__identity{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:26px}
+.prime-product__identity img{width:clamp(240px,28vw,430px);max-width:100%;height:auto}
+.prime-product__copy h3{font-size:clamp(26px,3vw,42px);line-height:1.15;margin:0 0 22px}
+.prime-product__copy p{margin-bottom:20px}
+.prime-product__capabilities{list-style:none;padding:0;margin:28px 0 0;display:flex;flex-wrap:wrap;gap:10px}
+.prime-product__capabilities li{border:1px solid var(--env-line-strong);border-radius:24px;padding:8px 15px;font-size:13px}
+@media(max-width:719px){.prime-product{grid-template-columns:minmax(0,1fr)}.prime-product__identity img{width:280px}.prime-product__identity{gap:20px}}
+
+/* AXIOPHYS phone composition; desktop remains governed by the original styles. */
+@media(max-width:719px){
+ :root{--logo-w:clamp(140px,39vw,180px);--logo-s:1.15;--aws-h:20px;--aws-pad:8px}
+ .nav__in{position:relative;gap:10px;min-width:0}
+ .nav__brand{min-width:0;gap:0}
+ .nav__act{margin-left:auto;flex-shrink:0}
+ .nav__aws{position:absolute;left:calc(var(--gutter) + var(--logo-w) * .27);top:calc(var(--nav-h) - 4px);margin:0;padding:0;border:0;transform:none!important;transition:opacity .25s}
+ .nav.stuck .nav__aws,.menu-open .nav__aws{opacity:0;pointer-events:none}
+ .hero__ui{padding-top:calc(var(--nav-h) + 68px + env(safe-area-inset-top));padding-bottom:12px}
+ .hero__eyebrow{gap:8px;max-width:100%}
+ .hero__eyebrow i{width:16px}
+ .hero__eyebrow span{font-size:clamp(9px,2.5vw,12px);letter-spacing:.08em;white-space:nowrap}
+ .hero .t-lede{font-size:16px;line-height:1.65;max-width:36ch}
+ .hero .t-hero{font-size:clamp(31px,8.6vw,54px);overflow-wrap:normal}
+ .prime-product__identity{min-width:0;align-items:flex-start}
+ .prime-product__identity .btn{min-height:48px;max-width:100%;white-space:normal}
+ .prime-product__copy{min-width:0}
+ .prime-product__copy .t-lede{font-size:18px;line-height:1.65}
+ .prime-product__capabilities{gap:8px}
+ .prime-product__capabilities li{font-size:13px}
+ .contact__mail{font-size:clamp(21px,6.2vw,32px);max-width:100%;overflow-wrap:anywhere}
+ .foot__in{min-width:0}
+ .foot__logo{max-width:220px;height:auto}
+ .menu{overflow-y:auto}
+ .menu a,.menu__auth{min-height:48px}
+}
+@media(max-width:719px) and (max-height:600px){.hero__ui{padding-top:calc(var(--nav-h) + 48px + env(safe-area-inset-top))}.hero .t-lede{font-size:15px}.hero__rail{margin-top:18px}}
