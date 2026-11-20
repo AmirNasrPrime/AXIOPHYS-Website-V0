@@ -144,3 +144,11 @@
  .hero .hero__ui{padding-top:calc(var(--nav-h) + 80px + env(safe-area-inset-top))}
  .hero__copy{transform:none}
 }
+
+/* A tiny scroll triggers a short, continuous move rather than a position jump. */
+@media(max-width:719px) and (prefers-reduced-motion:no-preference){
+ :root:not(.menu-open) .nav .nav__brand{transition:transform 280ms cubic-bezier(.22,.61,.36,1)}
+ :root:not(.menu-open) .nav .nav__logo{transition:transform 280ms cubic-bezier(.22,.61,.36,1),width 280ms cubic-bezier(.22,.61,.36,1)}
+ .hero__copy{transition:opacity 100ms ease-out}
+ body:has(.nav.brand-compact) .hero__copy{transition:opacity 160ms ease-out 280ms}
+}
