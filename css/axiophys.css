@@ -174,3 +174,11 @@
 .hero-scroll-stage{padding-bottom:0;min-height:calc(100svh + clamp(420px,65svh,700px))}
 .hero-scroll-stage--flow{min-height:0}
 @media(prefers-reduced-motion:reduce){.hero-scroll-stage{min-height:0}}
+
+/* Reveal typography in its final position; only opacity changes. */
+.hero__copy{transform:none}
+@media(max-width:719px) and (prefers-reduced-motion:no-preference){
+ .hero__copy h1,.hero__copy>.t-lede{transform:none;transition:opacity 180ms ease}
+ body:has(.nav.brand-compact) .hero__copy h1{transform:none;transition:opacity 420ms ease 280ms}
+ body:has(.nav.brand-compact) .hero__copy>.t-lede{transform:none;transition:opacity 420ms ease 380ms}
+}
