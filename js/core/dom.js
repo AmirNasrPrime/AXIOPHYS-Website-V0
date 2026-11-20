@@ -60,9 +60,19 @@ export function scrollToSection(el, extra = 18) {
   if (!el) return;
   const nav = document.getElementById('nav');
   const navH = nav ? nav.getBoundingClientRect().height : 88;
+  const track = el.matches('[data-story]') && el.closest('.story-track--pinned');
   const head = el.querySelector('.sec-head, .shell') || el;
   const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-  const top = Math.min(max, Math.max(0,
-    head.getBoundingClientRect().top + window.scrollY - navH - extra));
+  // Open a directly selected chapter at its reading position.
+  let destination = 0;
+  if (track) {
+    const trackBounds = track.getBoundingClientRect();
+    const stickyInset = parseFloat(getComputedStyle(el).top) || 0;
+    const travel = trackBounds.height - el.getBoundingClientRect().height;
+    destination = trackBounds.top + window.scrollY - stickyInset + travel;
+  } else if (el.id !== 'top') {
+    destination = head.getBoundingClientRect().top + window.scrollY - navH - extra;
+  }
+  const top = Math.min(max, Math.max(0, destination));
   window.scrollTo({ top, behavior: reduced() ? 'auto' : 'smooth' });
 }

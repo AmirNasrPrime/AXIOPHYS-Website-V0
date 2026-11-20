@@ -4,22 +4,6 @@
 import { $, $$, on, clamp, scrollToSection } from '../core/dom.js';
 
 export function initNav() {
-  // Native sticky staging keeps the opening readable before normal page flow.
-  const hero = document.querySelector('#hero');
-  if (hero && !hero.parentElement.classList.contains('hero-scroll-stage')) {
-    const stage = document.createElement('div');
-    stage.className = 'hero-scroll-stage';
-    hero.before(stage);
-    stage.append(hero);
-    const fitOpening = () => {
-      stage.classList.remove('hero-scroll-stage--flow');
-      if (hero.scrollHeight > window.innerHeight + 2) stage.classList.add('hero-scroll-stage--flow');
-    };
-    new ResizeObserver(fitOpening).observe(hero);
-    on(window, 'resize', fitOpening);
-    fitOpening();
-  }
-
   const nav = $('#nav'), bar = $('#progressBar'), ind = $('#navInd');
   const links = $$('#navLinks .nav__a');
   const burger = $('#burger'), menu = $('#menu');
@@ -68,21 +52,6 @@ export function initNav() {
 
   let queued = false;
   const onScroll = () => {
-    // Drive identity size directly from distance, with no animation lag.
-    const progress = window.innerWidth <= 719
-      ? (window.scrollY > 0 ? 1 : 0)
-      : clamp(window.scrollY / 220, 0, 1);
-    document.documentElement.style.setProperty('--brand-progress', String(progress));
-    if (nav) nav.classList.toggle('brand-compact', progress >= 1);
-    // Measure rendered bounds: phone browser chrome and safe areas change clearance.
-    const copy = document.querySelector('.hero__copy');
-    const logo = nav && nav.querySelector('.nav__logo');
-    if (copy && logo && window.innerWidth <= 719) {
-      const clearance = copy.getBoundingClientRect().top - logo.getBoundingClientRect().bottom;
-      const fade = progress >= 1 ? 1 : Math.min(clamp((progress - .4) / .6, 0, 1), clamp((clearance - 16) / 20, 0, 1));
-      copy.style.setProperty('--mobile-copy-opacity', String(fade));
-    }
-
     if (queued) return;
     queued = true;
     requestAnimationFrame(() => {

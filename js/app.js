@@ -5,6 +5,7 @@
    ========================================================================== */
 import { initReveal, initMagnetic, initRanges } from './core/motion.js';
 import { initHeroSequence } from './hero/sequence.js';
+import { initStory } from './sections/story.js';
 import { initNav } from './sections/nav.js';
 import { initAbout } from './sections/about.js';
 import { initLayer } from './sections/layer.js';
@@ -19,6 +20,7 @@ function safeInit(name, fn) {
 
 function boot() {
   safeInit('hero', initHeroSequence);      /* starts the hero film */
+  safeInit('story', initStory);
   safeInit('nav', initNav);
   safeInit('reveal', initReveal);
   safeInit('ranges', initRanges);
