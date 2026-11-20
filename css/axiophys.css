@@ -182,3 +182,12 @@
  body:has(.nav.brand-compact) .hero__copy h1{transform:none;transition:opacity 420ms ease 280ms}
  body:has(.nav.brand-compact) .hero__copy>.t-lede{transform:none;transition:opacity 420ms ease 380ms}
 }
+
+/* A slower, deliberate reveal, with no text displacement. */
+@media(min-width:720px) and (prefers-reduced-motion:no-preference){
+ .hero__copy{transition:opacity 900ms cubic-bezier(.22,.61,.36,1)}
+}
+@media(max-width:719px) and (prefers-reduced-motion:no-preference){
+ body:has(.nav.brand-compact) .hero__copy h1{transition:opacity 900ms cubic-bezier(.22,.61,.36,1) 280ms}
+ body:has(.nav.brand-compact) .hero__copy>.t-lede{transition:opacity 1000ms cubic-bezier(.22,.61,.36,1) 450ms}
+}
