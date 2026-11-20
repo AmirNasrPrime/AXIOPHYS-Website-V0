@@ -53,7 +53,7 @@ addEventListener('pageshow', function (event) {
 <link rel="stylesheet" href="css/mobile.css">
 
 <link rel="preload" as="image" href="media/hero-field-poster.jpg">
-<link rel="stylesheet" href="css/axiophys.css?v=phone-layout-1">
+<link rel="stylesheet" href="css/axiophys.css?v=opening-logo-1">
 </head>
 
 <body>
@@ -62,7 +62,7 @@ addEventListener('pageshow', function (event) {
 <script>
 /* Marks that scripting is available, so CSS may hide content for reveal.
    Without this the page stays fully legible with JavaScript off. */
-document.documentElement.classList.add('js');
+document.documentElement.classList.add('js', 'story-pending');
 </script>
 
 <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
@@ -108,6 +108,8 @@ document.documentElement.classList.add('js');
 
 <!-- ========================= PHASE B · SIMULATION HERO ==================== -->
 <section class="hero env" data-story id="hero" data-env="navy" data-autoplay="pending">
+  <img class="hero__opening-logo axiophys-logo" src="assets/axiophys-logo-transparent.png"
+    alt="" aria-hidden="true" width="1200" height="358">
   <div class="hero__media">
     <img class="hero__poster" src="media/hero-field-poster.jpg" alt="" aria-hidden="true">
     <video class="hero__vid" id="heroVidA" muted playsinline preload="auto" aria-hidden="true"></video>
@@ -273,7 +275,8 @@ document.documentElement.classList.add('js');
 </footer>
 </main>
 
-<script src="js/prime.bundle.js?v=phone-layout-1" defer></script>
+<script src="js/prime.bundle.js?v=opening-logo-1" defer
+  onerror="document.documentElement.classList.remove('story-pending')"></script>
 <noscript>
   <style>.hero__poster{opacity:1!important}</style>
 </noscript>

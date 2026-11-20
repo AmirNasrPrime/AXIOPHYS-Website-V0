@@ -45,6 +45,34 @@
   transform:none;
 }
 
+/* Paint the opening mark in the hero while the deferred story code loads. */
+.hero__opening-logo{display:none}
+@media(prefers-reduced-motion:no-preference){
+  :root{
+    --opening-logo-scale:4.4;
+    --opening-logo-gutter:max(var(--gutter),env(safe-area-inset-left));
+  }
+  .story-pending:not(.menu-open) .nav__brand:not(:focus-visible){visibility:hidden}
+  .story-pending .hero__copy{opacity:0}
+  .story-pending .hero__opening-logo{
+    display:block;
+    position:absolute;
+    z-index:calc(var(--z-hero-ui) + 1);
+    top:min(50%,50svh);
+    left:50%;
+    translate:-50% -50%;
+    width:min(calc(var(--logo-w) * var(--opening-logo-scale)),calc(100% - 2 * var(--opening-logo-gutter)));
+    height:auto;
+    pointer-events:none;
+  }
+}
+@media(min-width:1080px){
+  :root{--opening-logo-gutter:clamp(24px,2.6vw,44px)}
+}
+@media(max-width:719px),(max-width:960px) and (max-height:540px){
+  :root{--opening-logo-scale:3.16}
+}
+
 /* Keep manual video playback away from the middle of the opening graphic. */
 .hero .hero__manual{
   inset:calc(var(--story-inset) + 14px) var(--gutter) auto auto;

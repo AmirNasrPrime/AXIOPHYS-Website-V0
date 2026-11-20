@@ -110,7 +110,7 @@ export function initStory() {
           layoutOpening(distance, sceneHeight, height, mobile);
           needsOpeningLayout = false;
         }
-        if (useNativeTimeline && !still) continue;
+        if (useNativeTimeline && !still && root.classList.contains('story-active')) continue;
 
         const target = clamp(window.scrollY / distance, 0, 1);
         let progress = target;
@@ -142,6 +142,7 @@ export function initStory() {
     }
     root.classList.add('story-active');
     root.classList.toggle('story-native', useNativeTimeline && !still);
+    root.classList.remove('story-pending');
   }
   function schedule() {
     if (!frame) frame = requestAnimationFrame(update);
