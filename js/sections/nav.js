@@ -4,6 +4,22 @@
 import { $, $$, on, clamp, scrollToSection } from '../core/dom.js';
 
 export function initNav() {
+  // Native sticky staging keeps the opening readable before normal page flow.
+  const hero = document.querySelector('#hero');
+  if (hero && !hero.parentElement.classList.contains('hero-scroll-stage')) {
+    const stage = document.createElement('div');
+    stage.className = 'hero-scroll-stage';
+    hero.before(stage);
+    stage.append(hero);
+    const fitOpening = () => {
+      stage.classList.remove('hero-scroll-stage--flow');
+      if (hero.scrollHeight > window.innerHeight + 2) stage.classList.add('hero-scroll-stage--flow');
+    };
+    new ResizeObserver(fitOpening).observe(hero);
+    on(window, 'resize', fitOpening);
+    fitOpening();
+  }
+
   const nav = $('#nav'), bar = $('#progressBar'), ind = $('#navInd');
   const links = $$('#navLinks .nav__a');
   const burger = $('#burger'), menu = $('#menu');

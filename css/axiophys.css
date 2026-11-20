@@ -160,3 +160,17 @@
  body:has(.nav.brand-compact) .hero__copy h1{opacity:1;transform:translate3d(0,0,0);transition:opacity 420ms ease 280ms,transform 600ms cubic-bezier(.22,.61,.36,1) 280ms}
  body:has(.nav.brand-compact) .hero__copy>.t-lede{opacity:1;transform:translate3d(0,0,0);transition:opacity 420ms ease 380ms,transform 600ms cubic-bezier(.22,.61,.36,1) 380ms}
 }
+
+/* Keep the opening on screen while branding settles and copy is revealed. */
+.hero-scroll-stage{position:relative;padding-bottom:clamp(420px,65svh,700px)}
+.hero-scroll-stage>.hero{position:sticky;top:0;height:100svh;min-height:100svh}
+@media(min-width:720px){.hero .hero__ui{padding-top:calc(var(--nav-h) + 50px)}}
+.hero-scroll-stage--flow{padding-bottom:0}
+.hero-scroll-stage--flow>.hero{position:relative;height:auto}
+@media(prefers-reduced-motion:reduce){
+ .hero-scroll-stage{padding-bottom:0}
+ .hero-scroll-stage>.hero{position:relative;height:auto}
+}
+.hero-scroll-stage{padding-bottom:0;min-height:calc(100svh + clamp(420px,65svh,700px))}
+.hero-scroll-stage--flow{min-height:0}
+@media(prefers-reduced-motion:reduce){.hero-scroll-stage{min-height:0}}
