@@ -14,7 +14,11 @@ export function initStory() {
     track.className = scene.id === 'hero' ? 'story-track story-track--hero' : 'story-track';
     scene.before(track);
     track.append(scene);
-    return { scene, track, copy: scene.querySelector('.story-copy') };
+    return {
+      scene, track,
+      copy: scene.querySelector('.story-copy'),
+      aboutVisual: scene.querySelector('.about__fig'),
+    };
   });
   if (!chapters.length) return;
 
@@ -71,15 +75,18 @@ export function initStory() {
     const headerHeight = header?.offsetHeight ?? 0;
 
     // Read scene and track geometry together, then write animation state.
-    const measurements = chapters.map(({ scene, track, copy }) => {
+    const measurements = chapters.map(({ scene, track, copy, aboutVisual }) => {
       const sceneHeight = scene.offsetHeight;
       const inset = scene.id === 'hero' ? 0 : headerHeight;
-      const fits = height >= sceneHeight + inset - 2;
+      // Allow the mobile About text and full-height plots to enter separately.
+      const aboutInFlow = mobile && aboutVisual;
+      const fits = !aboutInFlow && height >= sceneHeight + inset - 2;
       return {
         scene, track, sceneHeight, inset,
         top: track.getBoundingClientRect().top,
         travel: track.offsetHeight - sceneHeight,
         copyTop: copy?.getBoundingClientRect().top,
+        aboutVisualTop: aboutInFlow ? aboutVisual.getBoundingClientRect().top : null,
         fits,
       };
     });
@@ -94,7 +101,7 @@ export function initStory() {
       schedule();
       return;
     }
-    for (const { scene, sceneHeight, top, inset, travel, copyTop } of measurements) {
+    for (const { scene, sceneHeight, top, inset, travel, copyTop, aboutVisualTop } of measurements) {
       const hero = scene.id === 'hero';
       const pinned = travel > 0;
       const entered = pinned
@@ -135,6 +142,10 @@ export function initStory() {
         root.style.setProperty('--brand-tagline', String(still ? 1 : smooth(dockEnd, taglineEnd, progress)));
         lead = smooth(leadStart, leadEnd, progress);
         detail = smooth(detailStart, 1, progress);
+      }
+      if (aboutVisualTop !== null) {
+        const visible = height * .92 - aboutVisualTop;
+        scene.style.setProperty('--about-visual-opacity', String(still ? 1 : smooth(0, height * .24, visible)));
       }
       scene.style.setProperty('--story-lead', still ? '1' : String(lead));
       scene.style.setProperty('--story-detail', still ? '1' : String(detail));

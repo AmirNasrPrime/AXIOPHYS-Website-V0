@@ -53,7 +53,7 @@ addEventListener('pageshow', function (event) {
 <link rel="stylesheet" href="css/mobile.css">
 
 <link rel="preload" as="image" href="media/hero-field-poster.jpg">
-<link rel="stylesheet" href="css/axiophys.css?v=opening-logo-1">
+<link rel="stylesheet" href="css/axiophys.css?v=about-flow-1">
 </head>
 
 <body>
@@ -153,6 +153,16 @@ document.documentElement.classList.add('js', 'story-pending');
   <canvas class="about__field" id="aboutField" aria-hidden="true"></canvas>
   <div class="about__glow glow" aria-hidden="true"></div>
   <div class="shell story-layout">
+    <div class="story-copy">
+      <div data-story-copy="lead">
+        <p class="story-label t-meta">About AXIOPHYS</p>
+        <h2 class="t-h2">Engineering is <span class="grad">becoming intelligent.</span></h2>
+      </div>
+      <div data-story-copy="detail">
+        <p class="t-lede">AXIOPHYS Inc. develops PRIME-CAE, an AI-native engineering platform for advanced design and simulation.</p>
+        <p class="t-small">We bring physics and AI together so engineers can explore more possibilities and make better-informed design decisions.</p>
+      </div>
+    </div>
     <figure class="story-visual about__fig">
       <div class="about__views" role="tablist" aria-label="Figure">
         <button class="about__view" type="button" role="tab" id="aboutTab0" aria-controls="aboutCanvas"
@@ -168,16 +178,6 @@ document.documentElement.classList.add('js', 'story-pending');
       </div>
       <figcaption class="about__cap t-micro" id="aboutCap">Physics-guided learning <b>·</b> phase portrait</figcaption>
     </figure>
-    <div class="story-copy">
-      <div data-story-copy="lead">
-        <p class="story-label t-meta">About AXIOPHYS</p>
-        <h2 class="t-h2">Engineering is <span class="grad">becoming intelligent.</span></h2>
-      </div>
-      <div data-story-copy="detail">
-        <p class="t-lede">AXIOPHYS Inc. develops PRIME-CAE, an AI-native engineering platform for advanced design and simulation.</p>
-        <p class="t-small">We bring physics and AI together so engineers can explore more possibilities and make better-informed design decisions.</p>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -275,7 +275,7 @@ document.documentElement.classList.add('js', 'story-pending');
 </footer>
 </main>
 
-<script src="js/prime.bundle.js?v=opening-logo-1" defer
+<script src="js/prime.bundle.js?v=about-flow-1" defer
   onerror="document.documentElement.classList.remove('story-pending')"></script>
 <noscript>
   <style>.hero__poster{opacity:1!important}</style>
