@@ -37,3 +37,78 @@
  .menu a,.menu__auth{min-height:48px}
 }
 @media(max-width:719px) and (max-height:600px){.hero__ui{padding-top:calc(var(--nav-h) + 48px + env(safe-area-inset-top))}.hero .t-lede{font-size:15px}.hero__rail{margin-top:18px}}
+
+
+/* Scroll-linked identity: full expansion at 0px, compact at 220px. */
+:root{--brand-progress:0;--logo-s:4.4;--brand-scale:calc(var(--logo-s) - (var(--logo-s) - 1) * var(--brand-progress))}
+.nav__brand{position:relative}
+:root:not(.menu-open) .nav .nav__logo{transform:scale(var(--brand-scale));transform-origin:0 0;transition:none}
+:root:not(.menu-open) .nav .nav__sub{transform:translate(calc(var(--logo-w) * (var(--brand-scale) - 1)),calc(var(--logo-w) * var(--logo-ar) * (var(--brand-scale) - 1) / 2)) scale(calc(2.2 - 1.2 * var(--brand-progress)));transform-origin:left center;transition:none}
+/* Preserve the original beside-the-logo layout and typography. */
+@media(min-width:1340px){
+ .nav__sub{width:var(--sub-w)}
+ :root:not(.menu-open) .nav .nav__sub{position:static;padding-left:20px;border-left:var(--lw-1) solid var(--env-line-strong);width:var(--sub-w);transform:translate(calc(var(--logo-w) * (var(--brand-scale) - 1)),calc(var(--logo-w) * var(--logo-ar) * (var(--brand-scale) - 1) / 2)) scale(calc(2.2 - 1.2 * var(--brand-progress)));transform-origin:left center}
+}
+@media(min-width:720px){.hero__ui{padding-top:calc(var(--nav-h) + var(--logo-w) * var(--logo-ar) * var(--logo-s) + 115px)}}
+@media(max-width:719px){
+ :root{--logo-s:3.1625}
+ :root:not(.menu-open) .nav .nav__logo{width:calc(min(var(--logo-w), (100vw - 2 * var(--gutter)) / var(--logo-s)) + (var(--logo-w) - min(var(--logo-w), (100vw - 2 * var(--gutter)) / var(--logo-s))) * var(--brand-progress))}
+ .hero__ui{padding-top:calc(var(--nav-h) + var(--logo-w) * var(--logo-ar) * var(--logo-s) + 42px + env(safe-area-inset-top))}
+}
+@media(prefers-reduced-motion:reduce){:root:not(.menu-open) .nav .nav__logo{transform:none}:root:not(.menu-open) .nav .nav__sub{position:static;transform:none}}
+
+/* Size the tagline with typography rather than a scaled text layer. */
+@media(min-width:1340px){
+ :root:not(.menu-open) .nav .nav__sub{
+  font-size:calc(var(--fs-micro) * (2.2 - 1.2 * var(--brand-progress)));
+  width:calc(var(--sub-w) * (2.2 - 1.2 * var(--brand-progress)));
+  flex-shrink:0;
+  white-space:nowrap;
+  transform:translate(calc(var(--logo-w) * (var(--brand-scale) - 1)),calc(var(--logo-w) * var(--logo-ar) * (var(--brand-scale) - 1) / 2));
+  transform-origin:left center;
+ }
+}
+
+/* Opening composition reverses naturally as the user returns to the top. */
+:root:not(.menu-open) .nav .nav__brand{
+ transform:translateY(calc((50svh - var(--nav-h) / 2 - var(--logo-w) * var(--logo-ar) * var(--logo-s) / 2) * (1 - var(--brand-progress))));
+ transition:none;
+}
+.hero__copy{
+ opacity:var(--brand-progress);
+ transform:translateY(calc(28px * (1 - var(--brand-progress))));
+ transition:none;
+}
+@media(max-width:719px){
+ :root:not(.menu-open) .nav .nav__brand{transform:translateY(calc((50svh - var(--nav-h) / 2 - var(--logo-w) * var(--logo-ar) * var(--logo-s) / 2) * (1 - var(--brand-progress))))}
+}
+@media(prefers-reduced-motion:reduce){
+ :root:not(.menu-open) .nav .nav__brand{transform:none}
+ .hero__copy{opacity:1;transform:none}
+}
+
+/* Keep the company tagline legible over the moving hero. */
+.nav__sub{color:#fff}
+
+/* A logo-only opening; the company tagline enters during the final resize. */
+:root:not(.menu-open) .nav .nav__brand{
+ transform:translate(
+  calc((50vw - var(--gutter) - var(--logo-w) * var(--logo-s) / 2) * (1 - var(--brand-progress))),
+  calc((50svh - var(--nav-h) / 2 - var(--logo-w) * var(--logo-ar) * var(--logo-s) / 2) * (1 - var(--brand-progress)))
+ );
+}
+:root:not(.menu-open) .nav .nav__sub{
+ opacity:clamp(0,calc((var(--brand-progress) - .8) * 5),1);
+}
+@media(max-width:719px){
+ :root:not(.menu-open) .nav .nav__brand{
+  transform:translate(
+   calc((50vw - var(--gutter) - min(var(--logo-w) * var(--logo-s),100vw - 2 * var(--gutter)) / 2) * (1 - var(--brand-progress))),
+   calc((50svh - var(--nav-h) / 2 - min(var(--logo-w) * var(--logo-s),100vw - 2 * var(--gutter)) * var(--logo-ar) / 2) * (1 - var(--brand-progress)))
+  );
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ :root:not(.menu-open) .nav .nav__brand{transform:none}
+ :root:not(.menu-open) .nav .nav__sub{opacity:1}
+}

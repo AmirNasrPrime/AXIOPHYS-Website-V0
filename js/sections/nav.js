@@ -52,6 +52,10 @@ export function initNav() {
 
   let queued = false;
   const onScroll = () => {
+    // Drive identity size directly from distance, with no animation lag.
+    const progress = clamp(window.scrollY / 220, 0, 1);
+    document.documentElement.style.setProperty('--brand-progress', String(progress));
+    if (nav) nav.classList.toggle('brand-compact', progress >= 1);
     if (queued) return;
     queued = true;
     requestAnimationFrame(() => {
@@ -68,7 +72,7 @@ export function initNav() {
         const host = probe && probe.closest ? probe.closest('[data-env]') : null;
         const under = host ? host.dataset.env : 'navy';
         nav.dataset.under = under;
-        nav.classList.toggle('stuck', sy > 60 || under !== 'navy');
+        nav.classList.toggle('stuck', sy > 0 || under !== 'navy');
       }
 
       let current = null;
