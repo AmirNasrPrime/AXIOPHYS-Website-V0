@@ -366,7 +366,6 @@ function initNav() {
     .filter(t => t.el);
 
   let queued = false;
-  let mobileCopyOpacity = 0;
   const onScroll = () => {
     // Drive identity size directly from distance, with no animation lag.
     const progress = clamp(window.scrollY / 220, 0, 1);
@@ -378,8 +377,7 @@ function initNav() {
     if (copy && logo && window.innerWidth <= 719) {
       const clearance = copy.getBoundingClientRect().top - logo.getBoundingClientRect().bottom;
       const fade = progress >= 1 ? 1 : Math.min(clamp((progress - .85) / .15, 0, 1), clamp((clearance - 28) / 32, 0, 1));
-      mobileCopyOpacity = Math.max(mobileCopyOpacity, fade);
-      copy.style.setProperty('--mobile-copy-opacity', String(mobileCopyOpacity));
+      copy.style.setProperty('--mobile-copy-opacity', String(fade));
     }
 
     if (queued) return;
