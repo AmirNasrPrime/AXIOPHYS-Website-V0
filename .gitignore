@@ -1,0 +1,11 @@
+.DS_Store
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+# the supplied source media — the site never requests it, and it should not be
+# published from a public repo
+my_files/
+contact-config.json
+contact-inbox.jsonl

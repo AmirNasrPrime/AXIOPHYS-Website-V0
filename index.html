@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AXIOPHYS Inc. — PRIME-CAE Engineering Intelligence</title>
+<meta name="description" content="PRIME-CAE is an AI-native computer-aided engineering platform connecting design, physics, engineering data, artificial intelligence and optimization in one environment.">
+<meta name="theme-color" content="#050709">
+<meta name="color-scheme" content="dark">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=2">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png?v=2">
+<meta property="og:title" content="AXIOPHYS Inc. — Engineering Intelligence. Built on Physics.">
+<meta property="og:description" content="One engineering intelligence layer. Design, simulate, learn, optimize and validate in a single connected environment.">
+<meta property="og:image" content="assets/prime-cae-lockup-color.png">
+<meta property="og:type" content="website">
+
+<!-- ==========================================================================
+     CRITICAL INLINE STYLE
+     Self-contained on purpose. If every external subresource is blocked —
+     which is what Safari does to file:// pages — the document must still be
+     a designed PRIME-CAE screen, never raw browser-default HTML.
+     ========================================================================== -->
+<style>
+  html{background:#050709;color-scheme:dark}
+  body{margin:0;background:#050709;color:#EDF1F6;
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+</style>
+
+<!-- Every load starts at the top: no restored scroll position, no #section jump -->
+<script>
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+addEventListener('pageshow', function () { scrollTo({ top: 0, left: 0, behavior: 'instant' }); });
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/hero.css">
+<link rel="stylesheet" href="css/sections.css">
+<link rel="stylesheet" href="css/mobile.css">
+
+<link rel="preload" as="image" href="media/hero-field-poster.jpg">
+<link rel="stylesheet" href="css/axiophys.css">
+</head>
+
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="axiophys-on-dark" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 -1.3944 0 0 1.1155  0 -0.26667 0 0 1.0251  0 -0.13333 0 0 1.01255  0 0 0 1 0"/></filter></defs></svg>
+
+<script>
+/* Marks that scripting is available, so CSS may hide content for reveal.
+   Without this the page stays fully legible with JavaScript off. */
+document.documentElement.classList.add('js');
+</script>
+
+<div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+
+<!-- ================================== NAV ================================= -->
+<header class="nav" id="nav" data-env="navy">
+  <div class="shell nav__in">
+    <a class="nav__brand" href="#top" aria-label="AXIOPHYS home">
+      <img class="nav__logo axiophys-logo" src="assets/axiophys-logo-transparent.png" alt="AXIOPHYS" width="1200" height="358">
+      <span class="nav__sub">Engineering Technology<br>Creators of PRIME-CAE</span>
+    </a>
+    <span class="nav__aws">
+      <img src="assets/powered-by-aws.png" alt="Powered by AWS" width="200" height="72" decoding="async">
+    </span>
+
+    <nav class="nav__links" id="navLinks" aria-label="Primary">
+      <a class="nav__a" href="#about">About</a>
+      <a class="nav__a" href="#layer">Platform</a>
+      <a class="nav__a" href="#products">Products</a>
+      <a class="nav__a" href="#access">Contact PRIME-CAE</a>
+      <span class="nav__ind" id="navInd" aria-hidden="true"></span>
+    </nav>
+
+    <div class="nav__act">
+      <!-- Sign in / sign out: placeholder until the account flow is defined -->
+      <button class="btn btn--ghost btn--sm nav__auth" id="navAuth" type="button" data-auth-state="signed-out">Sign in/up</button>
+      <button class="nav__icon nav__burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path d="M3 7h18M3 12h18M3 17h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu" id="menu" data-env="navy">
+  <a href="#about">About <span>01</span></a>
+  <a href="#layer">Platform <span>02</span></a>
+  <a href="#products">Products <span>03</span></a>
+  <a href="#access">Contact PRIME-CAE <span>04</span></a>
+  <!-- Sign in / sign up: placeholder until the account flow is defined -->
+  <button class="menu__auth" type="button" data-auth-state="signed-out">Sign in/up</button>
+</div>
+
+<main id="top">
+
+<!-- ========================= PHASE B · SIMULATION HERO ==================== -->
+<section class="hero env" id="hero" data-env="navy" data-autoplay="pending">
+  <div class="hero__media">
+    <img class="hero__poster" src="media/hero-field-poster.jpg" alt="" aria-hidden="true">
+    <video class="hero__vid" id="heroVidA" muted playsinline preload="auto" aria-hidden="true"></video>
+    <video class="hero__vid" id="heroVidB" muted playsinline preload="none" aria-hidden="true"></video>
+    <div class="hero__scan" aria-hidden="true"></div>
+    <div class="hero__grade" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero__manual">
+    <button type="button" id="heroPlay" aria-label="Play the simulation view">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <span class="t-micro">Play visualization</span>
+  </div>
+
+  <div class="shell hero__ui">
+    <div class="hero__copy">
+      <div class="hero__eyebrow"><i></i><span>PRIME-CAE &nbsp;·&nbsp; AI-Native Engineering</span></div>
+      <h1 class="t-hero">
+        <span class="grad">Engineering Intelligence.</span>
+        <em>Built on Physics.</em>
+      </h1>
+      <p class="t-lede">PRIME-CAE unifies engineering workflows, simulation, AI and optimization to accelerate complex mechanical design from concept to verified decision.</p>
+
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#about" data-magnetic>
+          Explore PRIME-CAE
+          <svg class="btn__go" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="shell hero__rail">
+    <div class="hero__railin">
+      <div class="hero__inst">
+        <span>VIEW<b id="instSolver">SIMULATION VIEW</b></span>
+        <span>FIELD<b>PHYSICS FIELD</b></span>
+        <span>STATE<b id="instState">SOLVED</b></span>
+        <span>FRAME<b id="instFrame">001</b></span>
+      </div>
+      <a class="scroll-cue" href="#about">Scroll to explore <i></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== 01 · ABOUT ============================== -->
+<section class="section env about" id="about" data-env="navy">
+  <canvas class="about__field" id="aboutField" aria-hidden="true"></canvas>
+  <div class="about__glow glow" aria-hidden="true"></div>
+
+  <div class="shell">
+    <div class="field about__in">
+      <div class="c-1 sec-mark" data-reveal>
+        <span class="sec-mark__n">01</span>
+        <span class="sec-mark__t">About AXIOPHYS</span>
+        <span class="sec-mark__r"></span>
+      </div>
+
+      <div class="c-l7 about__say" data-reveal>
+        <h2 class="t-h2 about__h">Engineering is<br><span class="grad">becoming intelligent.</span></h2>
+        <p class="t-lede about__lede">AXIOPHYS Inc. is an engineering technology company developing PRIME-CAE, an
+          AI-native computer-aided engineering platform for advanced design and simulation.</p>
+        <p class="t-small about__body">We are building a more connected engineering environment where
+          physics, artificial intelligence, data and optimization work together — so engineers can
+          explore more possibilities, understand complex behaviour faster, and make better-informed
+          design decisions.</p>
+        <ul class="about__marks" aria-label="What the platform is built on">
+          <li class="t-micro"><i aria-hidden="true"></i>Physics-grounded</li>
+          <li class="t-micro"><i aria-hidden="true"></i>AI-native</li>
+          <li class="t-micro"><i aria-hidden="true"></i>Design exploration</li>
+          <li class="t-micro"><i aria-hidden="true"></i>Engineering data</li>
+        </ul>
+      </div>
+
+      <figure class="c-r5 about__fig" data-reveal>
+        <div class="about__views" role="tablist" aria-label="Figure">
+          <button class="about__view" type="button" role="tab" id="aboutTab0" aria-controls="aboutCanvas"
+            aria-selected="true">Learning<i aria-hidden="true"></i></button>
+          <button class="about__view" type="button" role="tab" id="aboutTab1" aria-controls="aboutSearch"
+            aria-selected="false" tabindex="-1">Optimization<i aria-hidden="true"></i></button>
+        </div>
+        <div class="about__stage">
+          <canvas id="aboutCanvas" class="is-active" role="img"
+            aria-label="A phase portrait: sparse observations, several unconstrained fits drifting away from the true response, and a physics-guided prediction held on the orbit the governing physics allows."></canvas>
+          <canvas id="aboutSearch" role="img" aria-hidden="true"
+            aria-label="A design-domain search: candidate designs sampled across an objective landscape, successive generations closing in on the best feasible design on the constraint, and the best-so-far objective converging over the iterations."></canvas>
+        </div>
+        <figcaption class="about__cap t-micro" id="aboutCap">Physics-guided learning <b>·</b> phase portrait</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-from="navy" data-to="ice" aria-hidden="true"></div>
+
+<!-- ========================== 02 · WHAT PRIME-CAE IS ====================== -->
+<section class="section env" id="layer" data-env="ice">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="shell">
+    <div class="field sec-head" data-reveal>
+      <div class="c-1 sec-mark">
+        <span class="sec-mark__n">02</span>
+        <span class="sec-mark__t">What PRIME-CAE is</span>
+        <span class="sec-mark__r"></span>
+      </div>
+      <h2 class="c-l7 t-h2 sec-title">One engineering<br><span class="grad">intelligence layer</span></h2>
+      <p class="c-r5 t-lede sec-intro">Six things that normally live in six tools, held in one environment —
+      so a change in any of them is understood by all the others.</p>
+    </div>
+
+    <div class="layer__wrap" data-reveal>
+      <div class="orbit" id="orbit">
+        <canvas class="orbit__canvas" id="orbitCanvas" role="img"
+          aria-label="Generic structural engineering model demonstrating PRIME-CAE geometry, physics, data, AI, optimization and validation."></canvas>
+        <div class="orbit__nodes" id="orbitNodes">
+          <button class="orbit__node" type="button" data-node="geometry"     aria-pressed="true">Geometry</button>
+          <button class="orbit__node" type="button" data-node="physics"      aria-pressed="false">Physics</button>
+          <button class="orbit__node" type="button" data-node="data"         aria-pressed="false">Data</button>
+          <button class="orbit__node" type="button" data-node="ai"           aria-pressed="false">AI</button>
+          <button class="orbit__node" type="button" data-node="validation"   aria-pressed="false">Validation</button>
+          <button class="orbit__node" type="button" data-node="optimization" aria-pressed="false">Optimization</button>
+        </div>
+      </div>
+
+      <p class="layer__line">
+        <span class="t-micro" id="layerTag">GEOMETRY</span>
+        <span class="t-d2" id="layerLine"></span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-from="ice" data-to="sky" aria-hidden="true"></div>
+
+<!-- ========================== 04 · PRIME-CAE PRODUCTS ===================== -->
+<section class="section env" id="products" data-env="sky">
+  <div class="shell">
+    <div class="field sec-head" data-reveal>
+      <div class="c-1 sec-mark">
+        <span class="sec-mark__n">03</span>
+        <span class="sec-mark__t">The PRIME-CAE family</span>
+        <span class="sec-mark__r"></span>
+      </div>
+      <h2 class="c-l7 t-h2 sec-title">Four products,<br><span class="grad">one intelligence layer</span></h2>
+      <p class="c-r5 t-lede sec-intro">Each addresses a different part of the engineering problem. All of them
+      share the same model, the same physics and the same intelligence.</p>
+    </div>
+
+    <div class="fam" data-reveal>
+      <article class="fam__i">
+        <div class="fam__vis"><canvas data-product="design" aria-label="A design evolving across its space" role="img"></canvas></div>
+        <img class="fam__logo" src="assets/wm-design-color.png" alt="PRIME-DESIGN" width="900" height="61" loading="lazy">
+        <p class="t-small">Explore engineering possibilities faster through AI-assisted design and optimization.</p>
+      </article>
+
+      <article class="fam__i">
+        <div class="fam__vis"><canvas data-product="joint" aria-label="Load transfer through a structural connection" role="img"></canvas></div>
+        <img class="fam__logo" src="assets/wm-joint-color.png" alt="PRIME-JOINT" width="900" height="68" loading="lazy">
+        <p class="t-small">Bring engineering intelligence to structural connection design.</p>
+      </article>
+
+      <article class="fam__i">
+        <div class="fam__vis"><canvas data-product="life" aria-label="Structural response accumulating over service" role="img"></canvas></div>
+        <img class="fam__logo" src="assets/wm-life-color.png" alt="PRIME-LIFE" width="900" height="76" loading="lazy">
+        <p class="t-small">Extend engineering insight from design into durability and lifecycle performance.</p>
+      </article>
+
+      <article class="fam__i">
+        <div class="fam__vis"><canvas data-product="copilot" aria-label="Engineering context and a line of reasoning through it" role="img"></canvas></div>
+        <img class="fam__logo" src="assets/wm-copilot-color.png" alt="PRIME-COPILOT" width="900" height="59" loading="lazy">
+        <p class="t-small">A context-aware AI engineering partner grounded in the current design and physics.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-from="sky" data-to="white" aria-hidden="true"></div>
+
+<!-- ============================== 05 · CONTACT ============================ -->
+<section class="section env contact" id="access" data-env="white">
+  <div class="shell">
+    <div class="contact__in" data-reveal>
+      <span class="t-meta">Contact</span>
+      <h2 class="t-h2" style="margin:var(--s-4) 0 var(--s-5)">Let's build<br>
+        <span class="grad">what's next</span></h2>
+      <p class="t-lede">Interested in PRIME-CAE, a partnership, or early access? We'd like to hear
+      from you.</p>
+      <a class="contact__mail" href="mailto:info@prime-cae.com">info@prime-cae.com</a>
+    </div>
+  </div>
+</section>
+
+<!-- =============================== FOOTER ================================ -->
+<footer class="foot env" id="company" data-env="navy">
+  <div class="shell foot__in">
+    <div>
+      <img class="foot__logo axiophys-logo" src="assets/axiophys-logo-transparent.png" alt="AXIOPHYS" width="1200" height="358">
+      <p class="t-micro" style="margin-top:var(--s-4)">PRIME-CAE is a product of AXIOPHYS Inc.</p>
+    </div>
+    <nav class="foot__links" aria-label="Footer">
+      <a href="#layer">Platform</a>
+      <a href="#products">Products</a>
+      <a href="mailto:info@prime-cae.com">info@prime-cae.com</a>
+    </nav>
+    <span class="t-micro">© <span id="year">2026</span> AXIOPHYS Inc.</span>
+  </div>
+</footer>
+</main>
+
+<script src="js/prime.bundle.js" defer></script>
+<noscript>
+  <style>.hero__poster{opacity:1!important}</style>
+</noscript>
+</body>
+</html>
