@@ -351,14 +351,46 @@ function initStory() {
   let needsOpeningLayout = true;
   let openingDistance = 0;
   let phoneProgress;
-  let lastFrameTime = 0;
+  let phoneVelocity = 0;
+  let phoneFrameTime = 0;
 
-  // All opening beats share one distance. The paragraph finishes at release.
+  // All opening beats share one progress value, with the copy following the logo.
   const dockEnd = .54;
   const taglineEnd = .76;
   const leadStart = .55;
   const leadEnd = .78;
   const detailStart = .65;
+
+  function followPhoneScroll(target, now, visible) {
+    const remaining = target - (phoneProgress ?? target);
+    const settled = Math.abs(remaining) < .001 && Math.abs(phoneVelocity) < .025;
+    if (!visible || phoneProgress === undefined || settled) {
+      phoneProgress = target;
+      phoneVelocity = 0;
+      phoneFrameTime = 0;
+      return phoneProgress;
+    }
+
+    // A critically damped response preserves velocity between touch events.
+    // Limit the spring's pull so a fling still gives the logo time to dock.
+    const dt = phoneFrameTime ? Math.min((now - phoneFrameTime) / 1000, 1 / 30) : 1 / 60;
+    const response = 18;
+    const gap = clamp(remaining, -.2, .2);
+    const velocityTerm = (phoneVelocity - response * gap) * dt;
+    const decay = Math.exp(-response * dt);
+    const step = gap + (velocityTerm - gap) * decay;
+    phoneFrameTime = now;
+    phoneVelocity = (phoneVelocity - response * velocityTerm) * decay;
+    phoneProgress = clamp(phoneProgress + step, 0, 1);
+    if (remaining * (target - phoneProgress) <= 0) {
+      phoneProgress = target;
+      phoneVelocity = 0;
+      phoneFrameTime = 0;
+    } else {
+      schedule();
+    }
+    return phoneProgress;
+  }
 
   function layoutOpening(distance, sceneHeight, viewportHeight, mobile) {
     openingDistance = distance;
@@ -390,8 +422,6 @@ function initStory() {
   }
   function update(now) {
     frame = 0;
-    const elapsed = lastFrameTime ? Math.min(now - lastFrameTime, 40) : 16;
-    lastFrameTime = now;
     const height = window.innerHeight;
     const mobile = phone.matches;
     const useNativeTimeline = nativeTimeline && !mobile;
@@ -401,12 +431,17 @@ function initStory() {
     // Read scene and track geometry together, then write animation state.
     const measurements = chapters.map(({ scene, track, copy, aboutVisual }) => {
       const sceneHeight = scene.offsetHeight;
-      const inset = scene.id === 'hero' ? 0 : headerHeight;
+      const hero = scene.id === 'hero';
+      const inset = hero ? 0 : headerHeight;
+      // Match the hero's small viewport height while the phone toolbar moves.
+      const sceneViewport = mobile && hero
+        ? parseFloat(getComputedStyle(scene).minHeight) || height
+        : height;
       // Allow the mobile About text and full-height plots to enter separately.
       const aboutInFlow = mobile && aboutVisual;
-      const fits = !aboutInFlow && height >= sceneHeight + inset - 2;
+      const fits = !aboutInFlow && sceneViewport >= sceneHeight + inset - 2;
       return {
-        scene, track, sceneHeight, inset,
+        scene, track, sceneHeight, sceneViewport, inset,
         top: track.getBoundingClientRect().top,
         travel: track.offsetHeight - sceneHeight,
         copyTop: copy?.getBoundingClientRect().top,
@@ -425,7 +460,7 @@ function initStory() {
       schedule();
       return;
     }
-    for (const { scene, sceneHeight, top, inset, travel, copyTop, aboutVisualTop } of measurements) {
+    for (const { scene, sceneHeight, sceneViewport, top, inset, travel, copyTop, aboutVisualTop } of measurements) {
       const hero = scene.id === 'hero';
       const pinned = travel > 0;
       const entered = pinned
@@ -438,7 +473,7 @@ function initStory() {
       if (hero) {
         const distance = pinned ? travel : 128;
         if (needsOpeningLayout || distance !== openingDistance) {
-          layoutOpening(distance, sceneHeight, height, mobile);
+          layoutOpening(distance, sceneHeight, sceneViewport, mobile);
           needsOpeningLayout = false;
         }
         if (useNativeTimeline && !still && root.classList.contains('story-active')) continue;
@@ -446,19 +481,7 @@ function initStory() {
         const target = clamp(window.scrollY / distance, 0, 1);
         let progress = target;
         if (mobile && !still) {
-          // Touch scroll arrives in larger steps. Ease the whole opening toward
-          // each position, so text cannot catch up to a logo that's still moving.
-          if (phoneProgress === undefined || top + sceneHeight + travel < 0) {
-            phoneProgress = target;
-          } else {
-            const easedStep = (target - phoneProgress) * (1 - Math.exp(-elapsed / 55));
-            // Bound one frame's movement so a fling still has a visible glide.
-            const stepLimit = elapsed / 280;
-            phoneProgress += clamp(easedStep, -stepLimit, stepLimit);
-          }
-          if (Math.abs(target - phoneProgress) < .003) phoneProgress = target;
-          else schedule();
-          progress = phoneProgress;
+          progress = followPhoneScroll(target, now, top + sceneHeight + travel > 0);
         } else {
           phoneProgress = undefined;
         }
