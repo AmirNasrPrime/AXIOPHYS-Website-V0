@@ -11,6 +11,7 @@ import { initAbout } from './sections/about.js';
 import { initLayer } from './sections/layer.js';
 import { initProducts } from './sections/products.js';
 import { initAccess } from './sections/access.js';
+import { initContactAtom } from './sections/contact-atom.js';
 
 const failed = [];
 function safeInit(name, fn) {
@@ -30,6 +31,7 @@ function boot() {
   safeInit('layer', initLayer);
   safeInit('products', initProducts);
   safeInit('contact', initAccess);
+  safeInit('contact atom', initContactAtom);
 
   document.documentElement.classList.add('prime-ready');
   if (failed.length) console.warn('[prime] degraded sections:', failed.join(', '));
