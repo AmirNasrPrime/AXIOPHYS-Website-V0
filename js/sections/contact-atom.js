@@ -120,7 +120,7 @@ export function initContactAtom() {
     ctx.fill();
   }
 
-  const view = sceneLoop(canvas, now => {
+  sceneLoop(canvas, now => {
     const { w, h, dpr } = size;
     if (!w || !h) return;
     if (lastFrame) elapsed += clamp(now - lastFrame, 0, .065);
@@ -134,12 +134,11 @@ export function initContactAtom() {
     }
     ctx.drawImage(backdrop, 0, 0, w, h);
 
-    const time = reduced() ? 0 : Math.min(elapsed, 4.8);
+    const time = reduced() ? 0 : elapsed;
     const electrons = planes.map(plane => {
       const angle = plane.phase + plane.speed * time;
       return { plane, angle, depth: Math.sin(angle) * plane.depth };
     }).sort((a, b) => a.depth - b.depth);
     for (const { plane, angle } of electrons) paintElectron(plane, angle, cx, cy, radius);
-    if (elapsed >= 4.8) view.halt();
   }, { fps: 30 });
 }
