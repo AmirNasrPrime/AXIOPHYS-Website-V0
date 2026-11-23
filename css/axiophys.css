@@ -8,6 +8,38 @@
 }
 .nav__brand{position:relative}
 .nav__logo{flex:none;transition:none}
+.nav__in{position:relative}
+.nav__inception{
+  position:absolute;
+  inset-block-start:50%;
+  inset-inline-start:50%;
+  translate:-50% -50%;
+  display:grid;
+  justify-items:center;
+  gap:3px;
+  width:clamp(126px,calc(14vw - 40px),184px);
+  padding:5px 8px;
+  border-radius:5px;
+  background:rgba(3,10,20,.86);
+  pointer-events:none;
+}
+.nav__inception img{display:block;width:100%;height:auto}
+.nav__inception span{
+  color:#fff;
+  font:500 clamp(9px,.78vw,12px)/1.1 var(--font-sans);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+@media(min-width:1080px) and (max-width:1160px){
+  .nav__in{gap:8px}
+}
+@media(max-width:599px){
+  :root{--nav-main-row:62px;--nav-inception-row:48px;--nav-h:calc(var(--nav-main-row) + var(--nav-inception-row))}
+  .nav{padding-top:calc(env(safe-area-inset-top) + var(--nav-inception-row))}
+  .nav__in{height:var(--nav-main-row)}
+  .nav__inception{inset-block-start:calc(var(--nav-inception-row) / -2);width:132px}
+}
 .story-active .nav__brand{
   inline-size:var(--logo-w);
   block-size:100%;
