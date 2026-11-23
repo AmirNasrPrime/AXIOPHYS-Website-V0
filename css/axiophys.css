@@ -27,12 +27,6 @@
 @media(min-width:1080px) and (max-width:1160px){
   .nav__in{gap:8px}
 }
-@media(max-width:599px){
-  :root{--nav-main-row:62px;--nav-inception-row:48px;--nav-h:calc(var(--nav-main-row) + var(--nav-inception-row))}
-  .nav{padding-top:calc(env(safe-area-inset-top) + var(--nav-inception-row))}
-  .nav__in{height:var(--nav-main-row)}
-  .nav__inception{inset-block-start:calc(var(--nav-inception-row) / -2);width:132px}
-}
 .nav__sub{color:#fff;width:var(--sub-w);flex:none}
 
 /* Keep manual video playback above the hero copy. */
@@ -156,9 +150,27 @@
 }
 @media(max-width:719px){
   :root{--logo-w:clamp(140px,39vw,180px)}
-  .nav__in{gap:10px}
+  /* Both marks share one row; the menu keeps its full touch target. */
+  .nav__in{
+    display:grid;
+    grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) auto;
+    gap:clamp(8px,2vw,14px);
+  }
   .nav__brand{min-width:0;gap:0}
-  .nav__act{margin-left:auto;flex-shrink:0}
+  .nav__logo{width:100%;max-width:var(--logo-w);min-width:0;flex:0 1 auto}
+  .nav__inception{
+    position:static;
+    inset:auto;
+    translate:none;
+    width:100%;
+    max-width:132px;
+    min-width:0;
+    padding:0;
+    gap:clamp(1px,.5vw,3px);
+    justify-self:center;
+  }
+  .nav__inception span{font-size:clamp(6px,2vw,10px);letter-spacing:.06em}
+  .nav__act{margin-left:0;flex-shrink:0}
   .hero .hero__ui{padding-top:calc(var(--story-inset) + 30px);padding-bottom:12px}
   .hero .t-lede{font-size:16px;line-height:1.6;max-width:36ch}
   .hero .t-hero{font-size:clamp(31px,8.6vw,54px)}
