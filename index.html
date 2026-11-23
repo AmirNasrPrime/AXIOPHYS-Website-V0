@@ -48,12 +48,12 @@ addEventListener('pageshow', function (event) {
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/hero.css">
+<link rel="stylesheet" href="css/hero.css?v=static-hero-1">
 <link rel="stylesheet" href="css/sections.css">
-<link rel="stylesheet" href="css/mobile.css">
+<link rel="stylesheet" href="css/mobile.css?v=static-hero-1">
 
 <link rel="preload" as="image" href="media/hero-field-poster.jpg">
-<link rel="stylesheet" href="css/axiophys.css?v=inception-header-1">
+<link rel="stylesheet" href="css/axiophys.css?v=static-hero-1">
 </head>
 
 <body>
@@ -62,7 +62,7 @@ addEventListener('pageshow', function (event) {
 <script>
 /* Marks that scripting is available, so CSS may hide content for reveal.
    Without this the page stays fully legible with JavaScript off. */
-document.documentElement.classList.add('js', 'story-pending');
+document.documentElement.classList.add('js');
 </script>
 
 <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
@@ -111,9 +111,7 @@ document.documentElement.classList.add('js', 'story-pending');
 <main id="top">
 
 <!-- ========================= PHASE B · SIMULATION HERO ==================== -->
-<section class="hero env" data-story id="hero" data-env="navy" data-autoplay="pending">
-  <img class="hero__opening-logo axiophys-logo" src="assets/axiophys-logo-transparent.png"
-    alt="" aria-hidden="true" width="1200" height="358">
+<section class="hero env" id="hero" data-env="navy" data-autoplay="pending">
   <div class="hero__media">
     <img class="hero__poster" src="media/hero-field-poster.jpg" alt="" aria-hidden="true">
     <video class="hero__vid" id="heroVidA" muted playsinline preload="auto" aria-hidden="true"></video>
@@ -131,21 +129,20 @@ document.documentElement.classList.add('js', 'story-pending');
 
   <div class="shell hero__ui">
     <div class="hero__copy">
-      <h1 class="t-hero" data-story-copy="lead">
+      <h1 class="t-hero">
         <span class="grad">Engineering Intelligence.</span>
         <em>Built on Physics.</em>
       </h1>
-      <p class="t-lede" data-story-copy="detail">AXIOPHYS brings physics and artificial intelligence together to help engineers explore new possibilities, understand complex systems and turn ambitious ideas into better-informed design decisions.</p>
+      <p class="t-lede">AXIOPHYS brings physics and artificial intelligence together to help engineers explore new possibilities, understand complex systems and turn ambitious ideas into better-informed design decisions.</p>
     </div>
   </div>
 
   <div class="shell hero__rail">
     <div class="hero__railin">
       <div class="hero__inst">
-        <span>VIEW<b id="instSolver">SIMULATION VIEW</b></span>
+        <span>VIEW<b>SIMULATION VIEW</b></span>
         <span>FIELD<b>PHYSICS FIELD</b></span>
-        <span>STATE<b id="instState">SOLVED</b></span>
-        <span>FRAME<b id="instFrame">001</b></span>
+        <span>STATE<b>SOLVED</b></span>
       </div>
       <a class="scroll-cue" href="#about">Scroll to explore <i></i></a>
     </div>
@@ -281,8 +278,7 @@ document.documentElement.classList.add('js', 'story-pending');
 </footer>
 </main>
 
-<script src="js/prime.bundle.js?v=contact-orbit-2" defer
-  onerror="document.documentElement.classList.remove('story-pending')"></script>
+<script src="js/prime.bundle.js?v=static-hero-1" defer></script>
 <noscript>
   <style>.hero__poster{opacity:1!important}</style>
 </noscript>
