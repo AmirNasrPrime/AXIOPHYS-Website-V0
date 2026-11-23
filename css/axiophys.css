@@ -9,6 +9,7 @@
   inset-block-start:50%;
   inset-inline-start:50%;
   translate:-50% -50%;
+  scale:.9;
   display:grid;
   justify-items:center;
   gap:3px;
