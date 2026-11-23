@@ -52,16 +52,16 @@ export function addTicker(fn) {
 }
 
 /**
- * Land a section under the header with its content at the top of the frame.
+ * Land on the section content, with room for the header on upward jumps.
  * Anchoring on the section box itself lands on its top padding, which reads as
  * a large empty gap and pushes the actual content out of the window.
  */
 export function scrollToSection(el, extra = 18) {
   if (!el) return;
   const nav = document.getElementById('nav');
-  const navH = nav ? nav.getBoundingClientRect().height : 88;
   const track = el.matches('[data-story]') && el.closest('.story-track--pinned');
   const head = el.querySelector('.sec-head, .shell') || el;
+  const from = window.scrollY;
   const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
   // Open a directly selected chapter at its reading position.
   let destination = 0;
@@ -69,9 +69,12 @@ export function scrollToSection(el, extra = 18) {
     const trackBounds = track.getBoundingClientRect();
     const stickyInset = parseFloat(getComputedStyle(el).top) || 0;
     const travel = trackBounds.height - el.getBoundingClientRect().height;
-    destination = trackBounds.top + window.scrollY - stickyInset + travel;
+    destination = trackBounds.top + from - stickyInset + travel;
   } else if (el.id !== 'top') {
-    destination = head.getBoundingClientRect().top + window.scrollY - navH - extra;
+    destination = head.getBoundingClientRect().top + from - extra;
+    if (destination < from || nav?.querySelector(':focus-visible')) {
+      destination -= nav?.offsetHeight ?? 0;
+    }
   }
   const top = Math.min(max, Math.max(0, destination));
   window.scrollTo({ top, behavior: reduced() ? 'auto' : 'smooth' });

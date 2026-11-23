@@ -59,16 +59,16 @@ function addTicker(fn) {
 }
 
 /**
- * Land a section under the header with its content at the top of the frame.
+ * Land on the section content, with room for the header on upward jumps.
  * Anchoring on the section box itself lands on its top padding, which reads as
  * a large empty gap and pushes the actual content out of the window.
  */
 function scrollToSection(el, extra = 18) {
   if (!el) return;
   const nav = document.getElementById('nav');
-  const navH = nav ? nav.getBoundingClientRect().height : 88;
   const track = el.matches('[data-story]') && el.closest('.story-track--pinned');
   const head = el.querySelector('.sec-head, .shell') || el;
+  const from = window.scrollY;
   const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
   // Open a directly selected chapter at its reading position.
   let destination = 0;
@@ -76,9 +76,12 @@ function scrollToSection(el, extra = 18) {
     const trackBounds = track.getBoundingClientRect();
     const stickyInset = parseFloat(getComputedStyle(el).top) || 0;
     const travel = trackBounds.height - el.getBoundingClientRect().height;
-    destination = trackBounds.top + window.scrollY - stickyInset + travel;
+    destination = trackBounds.top + from - stickyInset + travel;
   } else if (el.id !== 'top') {
-    destination = head.getBoundingClientRect().top + window.scrollY - navH - extra;
+    destination = head.getBoundingClientRect().top + from - extra;
+    if (destination < from || nav?.querySelector(':focus-visible')) {
+      destination -= nav?.offsetHeight ?? 0;
+    }
   }
   const top = Math.min(max, Math.max(0, destination));
   window.scrollTo({ top, behavior: reduced() ? 'auto' : 'smooth' });
@@ -385,7 +388,7 @@ function initStory() {
    ========================================================================== */
 
 function initNav() {
-  const bar = $('#progressBar'), ind = $('#navInd');
+  const nav = $('#nav'), bar = $('#progressBar'), ind = $('#navInd');
   const links = $$('#navLinks .nav__a');
   const burger = $('#burger'), menu = $('#menu');
 
@@ -400,7 +403,10 @@ function initNav() {
       /* the page must not scroll behind an open sheet, and must not lose its
          place when the sheet closes */
       document.body.style.overflow = open ? 'hidden' : '';
-      if (open) menu.scrollTop = 0;
+      if (open) {
+        nav?.classList.remove('nav--hidden');
+        menu.scrollTop = 0;
+      }
     };
     on(burger, 'click', () => set(!menu.classList.contains('open')));
     /* close first, then let the anchor handler scroll — the lock has to be off
@@ -431,14 +437,22 @@ function initNav() {
     .filter(t => t.el);
 
   let queued = false;
+  let previousY = Math.max(0, window.scrollY);
   const onScroll = () => {
     if (queued) return;
     queued = true;
     requestAnimationFrame(() => {
       queued = false;
-      const sy = window.scrollY;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      // Ignore elastic scrolling past either end of the page.
+      const sy = clamp(window.scrollY, 0, max);
       if (bar) bar.style.width = `${clamp(sy / Math.max(max, 1), 0, 1) * 100}%`;
+      if (sy === 0 || sy < previousY || menu?.classList.contains('open')) {
+        nav?.classList.remove('nav--hidden');
+      } else if (sy > previousY) {
+        nav?.classList.add('nav--hidden');
+      }
+      previousY = sy;
 
       let current = null;
       for (const t of targets) {

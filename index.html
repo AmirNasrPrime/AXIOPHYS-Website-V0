@@ -48,8 +48,8 @@ addEventListener('pageshow', function (event) {
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/hero.css?v=static-hero-1">
-<link rel="stylesheet" href="css/sections.css">
+<link rel="stylesheet" href="css/hero.css?v=scroll-header-1">
+<link rel="stylesheet" href="css/sections.css?v=scroll-header-1">
 <link rel="stylesheet" href="css/mobile.css?v=static-hero-1">
 
 <link rel="preload" as="image" href="media/hero-field-poster.jpg">
@@ -65,10 +65,9 @@ addEventListener('pageshow', function (event) {
 document.documentElement.classList.add('js');
 </script>
 
-<div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
-
 <!-- ================================== NAV ================================= -->
 <header class="nav" id="nav" data-env="navy">
+  <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
   <div class="shell nav__in">
     <a class="nav__brand" href="#top" aria-label="AXIOPHYS home">
       <img class="nav__logo axiophys-logo" src="assets/axiophys-logo-transparent.png" alt="AXIOPHYS" width="1200" height="358">
@@ -278,7 +277,7 @@ document.documentElement.classList.add('js');
 </footer>
 </main>
 
-<script src="js/prime.bundle.js?v=static-hero-1" defer></script>
+<script src="js/prime.bundle.js?v=scroll-header-1" defer></script>
 <noscript>
   <style>.hero__poster{opacity:1!important}</style>
 </noscript>
