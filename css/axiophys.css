@@ -2,7 +2,7 @@
 :root{
   --story-inset:calc(var(--nav-h) + env(safe-area-inset-top));
 }
-.nav__logo{flex:none}
+.nav__logo{flex:none;scale:1.1}
 .nav__in{position:relative}
 .nav__inception{
   position:absolute;
@@ -149,6 +149,9 @@
 @media(max-height:520px){
   .story-layout .orbit{height:auto}
 }
+@media(max-height:540px) and (max-width:960px){
+  :root{--nav-h:62px}
+}
 @media(max-width:719px){
   :root{--logo-w:clamp(140px,39vw,180px)}
   /* Both marks share one row; the menu keeps its full touch target. */
@@ -157,7 +160,7 @@
     grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) auto;
     gap:clamp(8px,2vw,14px);
   }
-  .nav__brand{min-width:0;gap:0}
+  .nav__brand{min-width:0;min-height:44px;gap:0;padding-block:0}
   .nav__logo{width:100%;max-width:var(--logo-w);min-width:0;flex:0 1 auto}
   .nav__inception{
     position:static;
