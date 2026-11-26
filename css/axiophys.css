@@ -241,3 +241,6 @@
   .story-track--pinned>[data-story]{position:relative;top:auto}
   .story-active [data-story-copy]{opacity:1}
 }
+
+#access .contact__channels{margin-top:24px;gap:22px}
+#access .contact__channel .contact__mail{font-size:clamp(1rem,1.5vw,1.25rem);min-height:44px}
