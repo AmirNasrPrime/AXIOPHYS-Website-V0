@@ -174,7 +174,7 @@
     justify-self:center;
   }
   .nav__inception span{font-size:clamp(6px,2vw,10px);letter-spacing:.06em}
-  .nav__act{margin-left:0;flex-shrink:0}
+  .nav__act{grid-column:3;justify-self:end;margin-inline-start:0}
   .hero .hero__ui{padding-top:calc(var(--story-inset) + 30px);padding-bottom:12px}
   .hero .t-lede{font-size:16px;line-height:1.6;max-width:36ch}
   .hero .t-hero{font-size:clamp(31px,8.6vw,54px)}
