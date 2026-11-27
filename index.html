@@ -58,16 +58,6 @@
     -webkit-font-smoothing:antialiased}
 </style>
 
-<!-- Every load starts at the top: no restored scroll position, no #section jump -->
-<script>
-if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-if (location.hash) history.replaceState(null, '', location.pathname + location.search);
-scrollTo({ top: 0, left: 0, behavior: 'instant' });
-addEventListener('pageshow', function (event) {
-  if (event.persisted) scrollTo({ top: 0, left: 0, behavior: 'instant' });
-});
-</script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -83,6 +73,7 @@ addEventListener('pageshow', function (event) {
 <link rel="preload" as="image" href="media/hero-field-poster.jpg">
 <link rel="stylesheet" href="css/axiophys.css?v=static-contact-1">
 <link rel="stylesheet" href="css/contact-form.css?v=7">
+<link rel="stylesheet" href="css/missions.css?v=1">
 </head>
 
 <body>
@@ -251,23 +242,33 @@ document.documentElement.classList.add('js');
 <div class="seam" data-from="ice" data-to="sky" aria-hidden="true"></div>
 
 <!-- Product -->
-<section class="section env story-section" id="products" data-env="sky" data-story>
-  <div class="shell story-layout">
-    <figure class="story-visual story-product-visual">
-      <img src="assets/prime-cae-lockup-color.png" alt="PRIME-CAE" width="285" height="62" loading="lazy">
-      <canvas data-product="design" aria-label="Illustrative engineering design space showing nine variants of a structural part" role="img"></canvas>
-      <figcaption class="t-micro">Design space exploration</figcaption>
-    </figure>
-    <div class="story-copy">
-      <div data-story-copy="lead">
-        <p class="story-label t-meta">Our product · PRIME-CAE</p>
-        <h2 class="t-h2">From concept to <span class="grad">verified decision.</span></h2>
-      </div>
-      <div data-story-copy="detail">
-        <p class="t-lede">PRIME-CAE unifies engineering workflows, simulation, AI and optimization to accelerate complex mechanical design.</p>
-        <a class="btn btn--primary" href="https://www.prime-cae.com/" target="_blank" rel="noopener">Explore PRIME-CAE <span aria-hidden="true">↗</span></a>
-      </div>
+<section class="section env mission-section" id="products" data-env="sky">
+  <div class="shell mission-stage">
+    <div class="story-copy mission-intro">
+      <p class="story-label t-meta">Our product · PRIME-CAE</p>
+      <h2 class="t-h2">From concept to <span class="grad">verified decision.</span></h2>
+      <p class="t-lede">PRIME-CAE unifies engineering workflows, simulation, AI and optimization to accelerate complex mechanical design.</p>
+      <a class="btn btn--primary" href="https://www.prime-cae.com/" target="_blank" rel="noopener">Explore PRIME-CAE <span aria-hidden="true">↗</span></a>
     </div>
+    <div class="mission-slides">
+      <article class="mission-slide" data-mission-slide>
+        <figure class="mission-slide__art"><img src="assets/missions/resources.jpg" alt="Conceptual illustration of shared engineering computation" width="1672" height="941" loading="lazy"><figcaption class="mission-slide__copy"><h3 class="fam__title">Computational resources</h3>
+          <p class="t-small">Share and govern computing capacity so engineering teams can use it more efficiently.</p></figcaption></figure>
+      </article>
+      <article class="mission-slide" data-mission-slide>
+        <figure class="mission-slide__art"><img src="assets/missions/workflows.jpg" alt="Conceptual progression from engineering model to simulation result" width="1672" height="941" loading="lazy"><figcaption class="mission-slide__copy"><h3 class="fam__title">Engineering workflows</h3>
+          <p class="t-small">Reduce repetitive setup, execution and documentation work under engineer oversight.</p></figcaption></figure>
+      </article>
+      <article class="mission-slide" data-mission-slide>
+        <figure class="mission-slide__art"><img src="assets/missions/time-cost.jpg" alt="Conceptual numerical computation and resource optimization" width="1672" height="941" loading="lazy"><figcaption class="mission-slide__copy"><h3 class="fam__title">Computational time and cost</h3>
+          <p class="t-small">Pursue faster, more economical verified simulations and Physics AI data generation.</p></figcaption></figure>
+      </article>
+      <article class="mission-slide" data-mission-slide>
+        <figure class="mission-slide__art"><img src="assets/missions/design.jpg" alt="Conceptual topology-optimized engineering design" width="1672" height="941" loading="lazy"><figcaption class="mission-slide__copy"><h3 class="fam__title">Design</h3>
+          <p class="t-small">Explore broader design spaces and evaluate better performing structures and systems.</p></figcaption></figure>
+      </article>
+    </div>
+    <div class="mission-progress" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   </div>
 </section>
 
@@ -312,7 +313,7 @@ document.documentElement.classList.add('js');
 </footer>
 </main>
 
-<script src="js/prime.bundle.js?v=static-contact-1" defer></script>
+<script src="js/prime.bundle.js?v=missions-1" defer></script>
 <script src="js/contact.js?v=1" defer></script>
 <noscript>
   <style>.hero__poster{opacity:1!important}</style>
