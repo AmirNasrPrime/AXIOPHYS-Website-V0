@@ -82,7 +82,7 @@ addEventListener('pageshow', function (event) {
 
 <link rel="preload" as="image" href="media/hero-field-poster.jpg">
 <link rel="stylesheet" href="css/axiophys.css?v=static-contact-1">
-<link rel="stylesheet" href="css/contact-form.css?v=3">
+<link rel="stylesheet" href="css/contact-form.css?v=5">
 </head>
 
 <body>
@@ -274,12 +274,11 @@ document.documentElement.classList.add('js');
 <!-- Contact -->
 <section class="section env contact story-section" id="access" data-env="white">
   <div class="shell story-layout">
-    <div class="story-copy">
-      <div>
+    <div class="contact__copy">
         <p class="story-label t-meta">Contact</p>
         <h2 class="t-h2">Let's build <span class="grad">what's next.</span></h2>
-      </div>
-      <div>
+        <p class="contact__guidance">Choose <strong>Technical &amp; Product</strong> for product questions or engineering support. Choose <strong>Corporate &amp; Business</strong> for partnerships and general inquiries.</p>
+    </div>
         <form class="contact-form" data-contact-form>
           <div class="contact-form__row">
             <label>Full name <input name="name" autocomplete="name" maxlength="120" required></label>
@@ -287,14 +286,12 @@ document.documentElement.classList.add('js');
           </div>
           <div class="contact-form__row">
             <label>Organization <input name="organization" autocomplete="organization" maxlength="120" required></label>
-            <label>Inquiry type <select name="inquiry" required><option value="corporate">Corporate &amp; Business Inquiries</option><option value="technical">Technical &amp; Product Inquiries</option></select></label>
+            <label>Inquiry type <select name="inquiry" required><option value="" selected disabled>Please select</option><option value="corporate">Corporate &amp; Business Inquiries</option><option value="technical">Technical &amp; Product Inquiries</option></select></label>
           </div>
           <label class="contact-form__message">Message <textarea name="message" rows="2" minlength="10" maxlength="5000" required></textarea></label>
           <div class="contact-form__trap" aria-hidden="true"><label>Leave this field empty <input name="website" tabindex="-1" autocomplete="off"></label></div>
           <div class="contact-form__actions"><button type="submit">Send message</button><p class="contact-form__status" role="status" aria-live="polite"></p></div>
         </form>
-      </div>
-    </div>
   </div>
 </section>
 
