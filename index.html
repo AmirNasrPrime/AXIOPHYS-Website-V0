@@ -82,6 +82,7 @@ addEventListener('pageshow', function (event) {
 
 <link rel="preload" as="image" href="media/hero-field-poster.jpg">
 <link rel="stylesheet" href="css/axiophys.css?v=static-contact-1">
+<link rel="stylesheet" href="css/contact-form.css?v=1">
 </head>
 
 <body>
@@ -279,21 +280,18 @@ document.documentElement.classList.add('js');
         <h2 class="t-h2">Let's build <span class="grad">what's next.</span></h2>
       </div>
       <div>
-        <div class="contact__channels">
-          <div class="contact__channel">
-            <h3>Technical &amp; Product Inquiries</h3>
-            <a class="contact__mail" href="mailto:info@prime-cae.com">info@prime-cae.com</a>
+        <form class="contact-form" data-contact-form>
+          <div class="contact-form__row">
+            <label>Full name <input name="name" autocomplete="name" maxlength="120" required></label>
+            <label>Email address <input name="email" type="email" autocomplete="email" maxlength="254" required></label>
           </div>
-          <div class="contact__channel">
-            <h3>Corporate &amp; Business Inquiries</h3>
-            <a class="contact__mail" href="mailto:info@axiophys.com">info@axiophys.com</a>
-          </div>
-        </div>
+          <label>Organization <span class="contact-form__optional">(optional)</span><input name="organization" autocomplete="organization" maxlength="120"></label>
+          <label>Inquiry type <select name="inquiry" required><option value="corporate">Corporate &amp; Business Inquiries</option><option value="technical">Technical &amp; Product Inquiries</option></select></label>
+          <label>Message <textarea name="message" rows="5" minlength="10" maxlength="5000" required></textarea></label>
+          <div class="contact-form__trap" aria-hidden="true"><label>Leave this field empty <input name="website" tabindex="-1" autocomplete="off"></label></div>
+          <div class="contact-form__actions"><button type="submit">Send message</button><p class="contact-form__status" role="status" aria-live="polite"></p></div>
+        </form>
       </div>
-    </div>
-    <div class="story-visual story-contact-visual" aria-hidden="true">
-      <img class="contact-mark axiophys-logo" src="assets/axiophys-logo-transparent.png"
-        alt="" width="1200" height="358" loading="lazy" decoding="async">
     </div>
   </div>
 </section>
@@ -308,7 +306,7 @@ document.documentElement.classList.add('js');
     <nav class="foot__links" aria-label="Footer">
       <a href="#layer">Platform</a>
       <a href="#products">Product</a>
-      <a href="mailto:info@prime-cae.com">info@prime-cae.com</a>
+      <a href="#access">Contact Us</a>
     </nav>
     <span class="t-micro">© <span id="year">2026</span> AXIOPHYS Inc.</span>
   </div>
@@ -316,6 +314,7 @@ document.documentElement.classList.add('js');
 </main>
 
 <script src="js/prime.bundle.js?v=static-contact-1" defer></script>
+<script src="js/contact.js?v=1" defer></script>
 <noscript>
   <style>.hero__poster{opacity:1!important}</style>
 </noscript>
